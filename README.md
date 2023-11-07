@@ -2,7 +2,7 @@
 
 ## Manual para execucação do trabalho ##
 
-Para a execução do código do trabalho 2, siga o roteiro abaixo:
+Para a execução do código do trabalho, siga o roteiro abaixo:
 
 1. Acesse o diretório "src" dentro do diretório onde esse manual se encontra.
 
@@ -24,8 +24,6 @@ make all
 ```shell
 make run
 ```
-
-5. O seu terminal começará a receber o stdin, e aofim de todas as linhas de entrada, o programá imprimiráas respostas no terminal.
 
 ---
 
