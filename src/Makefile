@@ -1,7 +1,7 @@
 all: compile
 
 compile:
-	@gcc -o main.run *.c -Wall -I .
+	@gcc -o main.run *.c -pthread -Wall -I .
 
 run:
 	@./main.run
