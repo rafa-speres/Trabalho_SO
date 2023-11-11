@@ -4,6 +4,7 @@
 #include <string.h>
 #include <assert.h>
 #include <pthread.h>
+#include <semaphore.h>
 
 typedef struct {
     int onibus_ocupando; // -1 se tiver vazio
