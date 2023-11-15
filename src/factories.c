@@ -34,8 +34,8 @@ Onibus *create_Onibus(int onibus_id, int qtd_assentos, int qtd_pontos)
     o->id = onibus_id;
     o->assentos = (AssentoOnibus **)malloc(qtd_assentos * sizeof(AssentoOnibus *));
     o->qtd_assentos = qtd_assentos;
-    o->ponto_partida = rand_int(0, qtd_pontos - 1);
-    o->ponto_chegada = next_circular_idx(o->ponto_partida, qtd_pontos);
+    o->origem = rand_int(0, qtd_pontos - 1);
+    o->destino = next_circular_idx(o->origem, qtd_pontos);
     o->qtd_pontos = qtd_pontos;
 
     assert(o->assentos != NULL);
@@ -56,10 +56,10 @@ Passageiro *create_Passageiro(int passageiro_id, int qtd_pontos)
     assert(p != NULL);
 
     p->id = passageiro_id;
-    p->ponto_partida = rand_int(0, qtd_pontos - 1);
-    p->ponto_chegada = rand_int(0, qtd_pontos - 1);
+    p->origem = rand_int(0, qtd_pontos - 1);
+    p->destino = rand_int(0, qtd_pontos - 1);
 
-    while (p->ponto_partida == p->ponto_chegada) p->ponto_chegada = rand_int(0, qtd_pontos - 1);
+    while (p->origem == p->destino) p->destino = rand_int(0, qtd_pontos - 1);
 
     return p;
 }

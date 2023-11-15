@@ -18,16 +18,16 @@ typedef struct
     int id;
     AssentoOnibus **assentos;
     int qtd_assentos;
-    int ponto_partida; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
-    int ponto_chegada; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
+    int origem; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
+    int destino; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
     int qtd_pontos;
 } Onibus;
 
 typedef struct
 {
     int id;
-    int ponto_partida; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
-    int ponto_chegada; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
+    int origem; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
+    int destino; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
 } Passageiro;
 
 // Funcoes ponto de onibus
