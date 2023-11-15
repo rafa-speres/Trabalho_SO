@@ -59,49 +59,100 @@ Passageiro *create_Passageiro(int passageiro_id, int qtd_pontos)
     p->origem = rand_int(0, qtd_pontos - 1);
     p->destino = rand_int(0, qtd_pontos - 1);
 
-    while (p->origem == p->destino) p->destino = rand_int(0, qtd_pontos - 1);
+    while (p->origem == p->destino)
+        p->destino = rand_int(0, qtd_pontos - 1);
 
     return p;
 }
 
-PontoDeOnibus **create_many_PontoDeOnibus(int size)
+PontoDeOnibusList *create_many_PontoDeOnibus(int length)
 {
-    PontoDeOnibus **pontos_de_onibus = malloc(size * sizeof(PontoDeOnibus *));
-    assert(pontos_de_onibus != NULL);
+    PontoDeOnibusList *list = (PontoDeOnibusList *)malloc(sizeof(PontoDeOnibusList *));
+    list->items = malloc(length * sizeof(PontoDeOnibus *));
 
-    for (int i = 0; i < size; i++)
+    assert(list != NULL);
+    assert(list->items != NULL);
+
+    list->length = length;
+
+    for (int i = 0; i < length; i++)
     {
-        pontos_de_onibus[i] = create_PontoDeOnibus(i);
-        // print_PontoDeOnibus(pontos_de_onibus[i]);
+        list->items[i] = create_PontoDeOnibus(i);
     }
 
-    return pontos_de_onibus;
+    return list;
 }
 
-Onibus **create_many_Onibus(int size, int qtd_assentos, int qtd_pontos)
+OnibusList *create_many_Onibus(int length, int qtd_assentos, int qtd_pontos)
 {
-    Onibus **onibus_array = (Onibus **)malloc(size * sizeof(Onibus *));
-    assert(onibus_array != NULL);
+    OnibusList *list = (OnibusList *)malloc(sizeof(OnibusList *));
+    list->items = (Onibus **)malloc(length * sizeof(Onibus *));
 
-    for (int i = 0; i < size; i++)
+    assert(list != NULL);
+    assert(list->items != NULL);
+
+    list->length = length;
+
+    for (int i = 0; i < length; i++)
     {
-        onibus_array[i] = create_Onibus(i, qtd_assentos, qtd_pontos);
+        list->items[i] = create_Onibus(i, qtd_assentos, qtd_pontos);
     }
 
-    return onibus_array;
+    return list;
 }
 
-Passageiro **create_many_Passageiro(int size, int qtd_pontos)
+PassageiroList *create_many_Passageiro(int length, int qtd_pontos)
 {
-    Passageiro **passageiro_array = (Passageiro **)malloc(size * sizeof(Passageiro *));
-    assert(passageiro_array != NULL);
+    PassageiroList *list = (PassageiroList *)malloc(sizeof(PassageiroList *));
+    list->items = (Passageiro **)malloc(length * sizeof(Passageiro *));
 
-    for (int i = 0; i < size; i++)
+    assert(list != NULL);
+    assert(list->items != NULL);
+
+    list->length = length;
+
+    for (int i = 0; i < length; i++)
     {
-        passageiro_array[i] = create_Passageiro(i, qtd_pontos);
+        list->items[i] = create_Passageiro(i, qtd_pontos);
     }
 
-    return passageiro_array;
+    return list;
+}
+
+PontoDeOnibusContext *create_PontoDeOnibusContext(PontoDeOnibus *this, PontoDeOnibusList *pontos_de_onibus_list, OnibusList *onibus_list, PassageiroList *passageiro_list)
+{
+    PontoDeOnibusContext *context = (PontoDeOnibusContext *)malloc(sizeof(PontoDeOnibusContext *));
+
+    context->this = this;
+    context->pontos_de_onibus_list = pontos_de_onibus_list;
+    context->onibus_list = onibus_list;
+    context->passageiro_list = passageiro_list;
+
+    return context;
+}
+
+OnibusContext *create_OnibusContext(Onibus *this, PontoDeOnibusList *pontos_de_onibus_list, OnibusList *onibus_list, PassageiroList *passageiro_list)
+{
+    OnibusContext *context = (OnibusContext *)malloc(sizeof(OnibusContext *));
+
+    context->this = this;
+    context->pontos_de_onibus_list = pontos_de_onibus_list;
+    context->onibus_list = onibus_list;
+    context->passageiro_list = passageiro_list;
+
+    return context;
+}
+
+PassageiroContext *create_PassageiroContext(Passageiro *this, PontoDeOnibusList *pontos_de_onibus_list, OnibusList *onibus_list, PassageiroList *passageiro_list)
+{
+    PassageiroContext *context = (PassageiroContext *)malloc(sizeof(PassageiroContext *));
+
+    context->this = this;
+    context->pontos_de_onibus_list = pontos_de_onibus_list;
+    context->onibus_list = onibus_list;
+    context->passageiro_list = passageiro_list;
+
+    return context;
 }
 
 void print_PontoDeOnibus(PontoDeOnibus *p)
