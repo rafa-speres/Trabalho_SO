@@ -127,7 +127,7 @@ int main()
     }
 
     PontoDeOnibusList *pontos_de_onibus_list = create_many_PontoDeOnibus(S);
-    OnibusList *onibus_list = create_many_Onibus(C, A, S);
+    OnibusList *onibus_list = create_many_Onibus(C, A, pontos_de_onibus_list);
     PassageiroList *passageiros_list = create_many_Passageiro(P, S);
     pthread_t ponto_de_onibus_threads_list[S], onibus_threads_list[C], passageiros_threads_list[P];
 

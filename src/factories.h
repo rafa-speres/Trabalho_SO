@@ -20,7 +20,6 @@ typedef struct
     int qtd_assentos;
     int origem;  // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
     int destino; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
-    int qtd_pontos;
 } Onibus;
 
 typedef struct
@@ -74,7 +73,7 @@ typedef struct
 
 // Funcoes ponto de onibus
 PontoDeOnibusList *create_many_PontoDeOnibus(int length);
-OnibusList *create_many_Onibus(int length, int qtd_assentos, int qtd_pontos);
+OnibusList *create_many_Onibus(int length, int qtd_assentos, PontoDeOnibusList *ponto_de_onibus_list);
 PassageiroList *create_many_Passageiro(int length, int qtd_pontos);
 PontoDeOnibusContext *create_PontoDeOnibusContext(PontoDeOnibus* this, PontoDeOnibusList *pontos_de_onibus_list, OnibusList *onibus_list, PassageiroList *passageiro_list);
 OnibusContext *create_OnibusContext(Onibus* this, PontoDeOnibusList *pontos_de_onibus_list, OnibusList *onibus_list, PassageiroList *passageiro_list);
