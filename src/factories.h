@@ -17,17 +17,23 @@ typedef struct
 {
     int id;
     AssentoOnibus **assentos;
+    int qtd_assentos;
+    int ponto_partida; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
+    int ponto_chegada; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
+    int qtd_pontos;
 } Onibus;
 
 typedef struct
 {
     int id;
+    int ponto_partida; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
+    int ponto_chegada; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
 } Passageiro;
 
 // Funcoes ponto de onibus
 PontoDeOnibus **create_many_PontoDeOnibus(int size);
-Onibus **create_many_Onibus(int size, int num_assentos);
-Passageiro **create_many_Passageiro(int size);
+Onibus **create_many_Onibus(int size, int qtd_assentos, int qtd_pontos);
+Passageiro **create_many_Passageiro(int size, int qtd_pontos);
 void print_PontoDeOnibus(PontoDeOnibus *p);
 
 #endif
