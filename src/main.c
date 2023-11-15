@@ -5,8 +5,94 @@
 - Henrique Gualberto Marques, 13692380
 - Gustavo Alves da Silva Souza, 13727485
 */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+#include <pthread.h>
+#include <semaphore.h>
 #include "factories.h"
 #include "threads.h"
+
+void create_threads(
+    PontoDeOnibus **pontos_de_onibus_list,
+    Onibus **onibus_list,
+    Passageiro **passageiros_list,
+    pthread_t ponto_de_onibus_threads_list[],
+    pthread_t onibus_threads_list[],
+    pthread_t passageiros_threads_list[],
+    int S,
+    int C,
+    int P)
+{
+
+    for (int i = 0; i < S; i++)
+    {
+        if (pthread_create(&ponto_de_onibus_threads_list[i], NULL, thread_PontoDeOnibus, "thread 1") != 0)
+        {
+            perror("pthread_create(thread_PontoDeOnibus) error");
+            exit(1);
+        }
+    }
+
+    for (int i = 0; i < C; i++)
+    {
+        if (pthread_create(&onibus_threads_list[i], NULL, thread_Onibus, "thread 1") != 0)
+        {
+            perror("pthread_create(thread_Onibus) error");
+            exit(1);
+        }
+    }
+
+    for (int i = 0; i < P; i++)
+    {
+        if (pthread_create(&passageiros_threads_list[i], NULL, thread_Passageiro, "thread 1") != 0)
+        {
+            perror("pthread_create(thread_Passageiro) error");
+            exit(1);
+        }
+    }
+}
+
+void join_threads(
+    PontoDeOnibus **pontos_de_onibus_list,
+    Onibus **onibus_list,
+    Passageiro **passageiros_list,
+    pthread_t ponto_de_onibus_threads_list[],
+    pthread_t onibus_threads_list[],
+    pthread_t passageiros_threads_list[],
+    int S,
+    int C,
+    int P)
+{
+    for (int i = 0; i < S; i++)
+    {
+        if (pthread_join(ponto_de_onibus_threads_list[i], NULL) != 0)
+        {
+            perror("pthread_join(thread_PontoDeOnibus) error");
+            exit(3);
+        }
+    }
+
+    for (int i = 0; i < C; i++)
+    {
+        if (pthread_join(onibus_threads_list[i], NULL) != 0)
+        {
+            perror("pthread_join(thread_Onibus) error");
+            exit(3);
+        }
+    }
+
+    for (int i = 0; i < P; i++)
+    {
+        if (pthread_join(passageiros_threads_list[i], NULL) != 0)
+        {
+            perror("pthread_join(thread_Passageiro) error");
+            exit(3);
+        }
+    }
+}
 
 int main()
 {
@@ -45,47 +131,8 @@ int main()
     Passageiro **passageiros_list = create_many_Passageiro(P);
     pthread_t ponto_de_onibus_threads_list[S], onibus_threads_list[C], passageiros_threads_list[P];
 
-    for (int i = 0; i < S; i++)
-    {
-        if (pthread_create(&ponto_de_onibus_threads_list[i], NULL, thread_PontoDeOnibus, "thread 1") != 0)
-        {
-            perror("pthread_create(thread_PontoDeOnibus) error");
-            exit(1);
-        }
-        if (pthread_join(ponto_de_onibus_threads_list[i], NULL) != 0)
-        {
-            perror("pthread_join(thread_PontoDeOnibus) error");
-            exit(3);
-        }
-    }
-
-    for (int i = 0; i < C; i++)
-    {
-        if (pthread_create(&onibus_threads_list[i], NULL, thread_Onibus, "thread 1") != 0)
-        {
-            perror("pthread_create(thread_Onibus) error");
-            exit(1);
-        }
-        if (pthread_join(onibus_threads_list[i], NULL) != 0)
-        {
-            perror("pthread_join(thread_Onibus) error");
-            exit(3);
-        }
-    }
-
-    for (int i = 0; i < P; i++)
-    {
-        if (pthread_create(&passageiros_threads_list[i], NULL, thread_Passageiro, "thread 1") != 0)
-        {
-            perror("pthread_create(thread_Passageiro) error");
-            exit(1);
-        }
-        if (pthread_join(passageiros_threads_list[i], NULL) != 0)
-        {
-            perror("pthread_join(thread_Passageiro) error");
-            exit(3);
-        }
-    }
+    create_threads(pontos_de_onibus_list, onibus_list, passageiros_list, ponto_de_onibus_threads_list, onibus_threads_list, passageiros_threads_list, S, C, P);
+    join_threads(pontos_de_onibus_list, onibus_list, passageiros_list, ponto_de_onibus_threads_list, onibus_threads_list, passageiros_threads_list, S, C, P);
 
     return 0;
 }

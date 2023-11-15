@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
 #include "factories.h"
 
 PontoDeOnibus *create_PontoDeOnibus(int sent_id)
