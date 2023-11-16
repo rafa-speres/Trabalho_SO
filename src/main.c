@@ -14,6 +14,7 @@
 #include <semaphore.h>
 #include "factories.h"
 #include "threads.h"
+#include "printer_thread.h"
 
 void create_threads(
     PontoDeOnibusList *pontos_de_onibus_list,
@@ -21,7 +22,8 @@ void create_threads(
     PassageiroList *passageiros_list,
     pthread_t ponto_de_onibus_threads_list[],
     pthread_t onibus_threads_list[],
-    pthread_t passageiros_threads_list[])
+    pthread_t passageiros_threads_list[],
+    pthread_t *printer_thread)
 {
 
     for (int i = 0; i < pontos_de_onibus_list->length; i++)
@@ -56,6 +58,12 @@ void create_threads(
             exit(1);
         }
     }
+
+    if (pthread_create(printer_thread, NULL, thread_state_printer, create_Context(pontos_de_onibus_list, onibus_list, passageiros_list)) != 0)
+    {
+        perror("pthread_create(thread_state_printer) error");
+        exit(1);
+    }
 }
 
 void join_threads(
@@ -64,7 +72,8 @@ void join_threads(
     PassageiroList *passageiros_list,
     pthread_t ponto_de_onibus_threads_list[],
     pthread_t onibus_threads_list[],
-    pthread_t passageiros_threads_list[])
+    pthread_t passageiros_threads_list[],
+    pthread_t *printer_thread)
 {
     for (int i = 0; i < pontos_de_onibus_list->length; i++)
     {
@@ -91,6 +100,12 @@ void join_threads(
             perror("pthread_join(thread_Passageiro) error");
             exit(3);
         }
+    }
+
+    if (pthread_join(*printer_thread, NULL) != 0)
+    {
+        perror("pthread_join(printer_thread) error");
+        exit(3);
     }
 }
 
@@ -129,10 +144,10 @@ int main()
     PontoDeOnibusList *pontos_de_onibus_list = create_many_PontoDeOnibus(S);
     OnibusList *onibus_list = create_many_Onibus(C, A, pontos_de_onibus_list);
     PassageiroList *passageiros_list = create_many_Passageiro(P, S);
-    pthread_t ponto_de_onibus_threads_list[S], onibus_threads_list[C], passageiros_threads_list[P];
+    pthread_t ponto_de_onibus_threads_list[S], onibus_threads_list[C], passageiros_threads_list[P], printer_thread;
 
-    create_threads(pontos_de_onibus_list, onibus_list, passageiros_list, ponto_de_onibus_threads_list, onibus_threads_list, passageiros_threads_list);
-    join_threads(pontos_de_onibus_list, onibus_list, passageiros_list, ponto_de_onibus_threads_list, onibus_threads_list, passageiros_threads_list);
+    create_threads(pontos_de_onibus_list, onibus_list, passageiros_list, ponto_de_onibus_threads_list, onibus_threads_list, passageiros_threads_list, &printer_thread);
+    join_threads(pontos_de_onibus_list, onibus_list, passageiros_list, ponto_de_onibus_threads_list, onibus_threads_list, passageiros_threads_list, &printer_thread);
 
     return 0;
 }

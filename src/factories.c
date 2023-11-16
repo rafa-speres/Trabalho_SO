@@ -35,7 +35,8 @@ Onibus *create_Onibus(int onibus_id, int qtd_assentos, PontoDeOnibusList *ponto_
     o->assentos = (AssentoOnibus **)malloc(qtd_assentos * sizeof(AssentoOnibus *));
     o->qtd_assentos = qtd_assentos;
     o->origem = rand_int(0, ponto_de_onibus_list->length - 1);
-    while (ponto_de_onibus_list->items[o->origem]->onibus_ocupando != -1) o->origem = rand_int(0, ponto_de_onibus_list->length - 1); 
+    while (ponto_de_onibus_list->items[o->origem]->onibus_ocupando != -1)
+        o->origem = rand_int(0, ponto_de_onibus_list->length - 1);
     o->destino = -1;
 
     ponto_de_onibus_list->items[o->origem]->onibus_ocupando = o->id;
@@ -69,7 +70,7 @@ Passageiro *create_Passageiro(int passageiro_id, int qtd_pontos)
 
 PontoDeOnibusList *create_many_PontoDeOnibus(int length)
 {
-    PontoDeOnibusList *list = (PontoDeOnibusList *)malloc(sizeof(PontoDeOnibusList *));
+    PontoDeOnibusList *list = (PontoDeOnibusList *)malloc(sizeof(PontoDeOnibusList));
     list->items = malloc(length * sizeof(PontoDeOnibus *));
 
     assert(list != NULL);
@@ -87,7 +88,7 @@ PontoDeOnibusList *create_many_PontoDeOnibus(int length)
 
 OnibusList *create_many_Onibus(int length, int qtd_assentos, PontoDeOnibusList *ponto_de_onibus_list)
 {
-    OnibusList *list = (OnibusList *)malloc(sizeof(OnibusList *));
+    OnibusList *list = (OnibusList *)malloc(sizeof(OnibusList));
     list->items = (Onibus **)malloc(length * sizeof(Onibus *));
 
     assert(list != NULL);
@@ -105,7 +106,7 @@ OnibusList *create_many_Onibus(int length, int qtd_assentos, PontoDeOnibusList *
 
 PassageiroList *create_many_Passageiro(int length, int qtd_pontos)
 {
-    PassageiroList *list = (PassageiroList *)malloc(sizeof(PassageiroList *));
+    PassageiroList *list = (PassageiroList *)malloc(sizeof(PassageiroList));
     list->items = (Passageiro **)malloc(length * sizeof(Passageiro *));
 
     assert(list != NULL);
@@ -123,7 +124,7 @@ PassageiroList *create_many_Passageiro(int length, int qtd_pontos)
 
 PontoDeOnibusContext *create_PontoDeOnibusContext(PontoDeOnibus *this, PontoDeOnibusList *pontos_de_onibus_list, OnibusList *onibus_list, PassageiroList *passageiro_list)
 {
-    PontoDeOnibusContext *context = (PontoDeOnibusContext *)malloc(sizeof(PontoDeOnibusContext *));
+    PontoDeOnibusContext *context = (PontoDeOnibusContext *)malloc(sizeof(PontoDeOnibusContext));
 
     context->this = this;
     context->pontos_de_onibus_list = pontos_de_onibus_list;
@@ -135,7 +136,7 @@ PontoDeOnibusContext *create_PontoDeOnibusContext(PontoDeOnibus *this, PontoDeOn
 
 OnibusContext *create_OnibusContext(Onibus *this, PontoDeOnibusList *pontos_de_onibus_list, OnibusList *onibus_list, PassageiroList *passageiro_list)
 {
-    OnibusContext *context = (OnibusContext *)malloc(sizeof(OnibusContext *));
+    OnibusContext *context = (OnibusContext *)malloc(sizeof(OnibusContext));
 
     context->this = this;
     context->pontos_de_onibus_list = pontos_de_onibus_list;
@@ -147,9 +148,20 @@ OnibusContext *create_OnibusContext(Onibus *this, PontoDeOnibusList *pontos_de_o
 
 PassageiroContext *create_PassageiroContext(Passageiro *this, PontoDeOnibusList *pontos_de_onibus_list, OnibusList *onibus_list, PassageiroList *passageiro_list)
 {
-    PassageiroContext *context = (PassageiroContext *)malloc(sizeof(PassageiroContext *));
+    PassageiroContext *context = (PassageiroContext *)malloc(sizeof(PassageiroContext));
 
     context->this = this;
+    context->pontos_de_onibus_list = pontos_de_onibus_list;
+    context->onibus_list = onibus_list;
+    context->passageiro_list = passageiro_list;
+
+    return context;
+}
+
+Context *create_Context(PontoDeOnibusList *pontos_de_onibus_list, OnibusList *onibus_list, PassageiroList *passageiro_list)
+{
+    Context *context = (Context *)malloc(sizeof(Context));
+
     context->pontos_de_onibus_list = pontos_de_onibus_list;
     context->onibus_list = onibus_list;
     context->passageiro_list = passageiro_list;
