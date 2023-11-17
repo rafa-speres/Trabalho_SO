@@ -40,9 +40,9 @@ typedef struct
 
 typedef struct
 {
-    int onibus_ocupando; // -1 se tiver vazio
-    PassageiroList *passageiros_list;
     int id;
+    PassageiroList *passageiros_list;
+    int onibus_ocupando; // -1 se tiver vazio
 } PontoDeOnibus;
 
 typedef struct

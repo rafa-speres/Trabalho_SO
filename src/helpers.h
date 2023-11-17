@@ -4,6 +4,6 @@
 #ifndef HELPERS
 #define HELPERS
 
-bool isFinished(Context* ctx);
+bool isFinished(PassageiroList * passageiro_list);
 
 #endif

@@ -5,27 +5,18 @@
 #include "printer_thread.h"
 #include "factories.h"
 #include "helpers.h"
+#include "utils.h"
 
 void clearTerminal()
 {
   printf("\033[2J\033[H");
 }
 
-void sleep(int ms)
-{
-  struct timespec sleep_time;
-
-  sleep_time.tv_sec = 0;
-  sleep_time.tv_nsec = 1000000 * ms;
-
-  nanosleep(&sleep_time, NULL);
-}
-
 void *thread_state_printer(void *arg)
 {
   Context *context = (Context *)arg;
 
-  while (isFinished(context) == false)
+  while (isFinished(context->passageiro_list) == false)
   {
     for (int idx = 0; idx < context->pontos_de_onibus_list->length; idx++)
     {
