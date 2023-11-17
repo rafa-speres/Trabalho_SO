@@ -1,19 +1,14 @@
 #include <stdbool.h>
 #include <pthread.h>
+#include "dynamic-list.h"
 
 #ifndef FACTORIES
 #define FACTORIES
 
 typedef struct
 {
-    int ocupacao; // -1 se tiver vazio
-    int id_onibus;
-} AssentoOnibus;
-
-typedef struct
-{
     int id;
-    AssentoOnibus **assentos;
+    DynamicList *passageiros_list;
     int qtd_assentos;
     int origem;  // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
     int destino; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
@@ -42,13 +37,13 @@ typedef struct
 typedef struct
 {
     int id;
-    PassageiroList *passageiros_list;
+    DynamicList *passageiros_list;
     int onibus_ocupando; // -1 se tiver vazio
-    pthread_mutex_t* ponto_de_onibus_mutex;
-    pthread_mutex_t* onibus_management_mutex;
-    pthread_cond_t* onibus_management_lock;
-    pthread_mutex_t* ponto_de_onibus_management_mutex;
-    pthread_cond_t* ponto_de_onibus_management_lock;
+    pthread_mutex_t *ponto_de_onibus_mutex;
+    pthread_mutex_t *onibus_management_mutex;
+    pthread_cond_t *onibus_management_lock;
+    pthread_mutex_t *ponto_de_onibus_management_mutex;
+    pthread_cond_t *ponto_de_onibus_management_lock;
 } PontoDeOnibus;
 
 typedef struct
@@ -56,6 +51,12 @@ typedef struct
     PontoDeOnibus **items;
     int length;
 } PontoDeOnibusList;
+
+typedef struct
+{
+    void **items;
+    int length;
+} GenericList;
 
 typedef struct
 {
@@ -96,6 +97,7 @@ PontoDeOnibusContext *create_PontoDeOnibusContext(PontoDeOnibus *this, PontoDeOn
 OnibusContext *create_OnibusContext(Onibus *this, PontoDeOnibusList *pontos_de_onibus_list, OnibusList *onibus_list, PassageiroList *passageiro_list);
 PassageiroContext *create_PassageiroContext(Passageiro *this, PontoDeOnibusList *pontos_de_onibus_list, OnibusList *onibus_list, PassageiroList *passageiro_list);
 Context *create_Context(PontoDeOnibusList *pontos_de_onibus_list, OnibusList *onibus_list, PassageiroList *passageiro_list);
+
 void print_PontoDeOnibus(PontoDeOnibus *p);
 
 #endif

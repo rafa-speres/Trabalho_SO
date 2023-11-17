@@ -4,17 +4,18 @@
 #include <assert.h>
 #include "factories.h"
 #include "utils.h"
+#include "dynamic-list.h"
 
 PontoDeOnibus *create_PontoDeOnibus(int id, PassageiroList *passageiros_list)
 {
     PontoDeOnibus *ponto_de_onibus = (PontoDeOnibus *)malloc(sizeof(PontoDeOnibus));
-    ponto_de_onibus->passageiros_list = (PassageiroList *)malloc(sizeof(PassageiroList *));
+    ponto_de_onibus->passageiros_list = createList();
     ponto_de_onibus->ponto_de_onibus_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t *));
     ponto_de_onibus->onibus_management_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t *));
     ponto_de_onibus->onibus_management_lock = (pthread_cond_t *)malloc(sizeof(pthread_cond_t *));
     ponto_de_onibus->ponto_de_onibus_management_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t *));
     ponto_de_onibus->ponto_de_onibus_management_lock = (pthread_cond_t *)malloc(sizeof(pthread_cond_t *));
-    
+
     assert(ponto_de_onibus != NULL);
     assert(ponto_de_onibus->passageiros_list != NULL);
     assert(ponto_de_onibus->ponto_de_onibus_mutex != NULL);
@@ -29,41 +30,18 @@ PontoDeOnibus *create_PontoDeOnibus(int id, PassageiroList *passageiros_list)
     pthread_mutex_init(ponto_de_onibus->ponto_de_onibus_management_mutex, NULL);
     pthread_cond_init(ponto_de_onibus->ponto_de_onibus_management_lock, NULL);
 
-    int passageiros_count = 0;
+    ponto_de_onibus->id = id;
+    ponto_de_onibus->onibus_ocupando = -1;
 
     for (int idx = 0; idx < passageiros_list->length; idx++)
     {
         if (passageiros_list->items[idx]->origem == id)
         {
-            passageiros_count++;
-        }
-    }
-
-    ponto_de_onibus->id = id;
-    ponto_de_onibus->onibus_ocupando = -1;
-    ponto_de_onibus->passageiros_list->items = (Passageiro **)malloc(passageiros_count * sizeof(Passageiro *));
-    ponto_de_onibus->passageiros_list->length = passageiros_count;
-
-    for (int fromIdx = 0, toIdx = 0; fromIdx < passageiros_list->length; fromIdx++)
-    {
-        if (passageiros_list->items[fromIdx]->origem == id)
-        {
-            ponto_de_onibus->passageiros_list->items[toIdx++] = passageiros_list->items[fromIdx];
+            appendList(ponto_de_onibus->passageiros_list, passageiros_list->items[idx]);
         }
     }
 
     return ponto_de_onibus;
-}
-
-AssentoOnibus *create_AssentoOnibus(int ocupacao, int id_onibus)
-{
-    AssentoOnibus *a = (AssentoOnibus *)malloc(sizeof(AssentoOnibus));
-    assert(a != NULL);
-
-    a->ocupacao = ocupacao;
-    a->id_onibus = id_onibus;
-
-    return a;
 }
 
 Onibus *create_Onibus(int onibus_id, int qtd_assentos, PontoDeOnibusList *ponto_de_onibus_list)
@@ -72,7 +50,7 @@ Onibus *create_Onibus(int onibus_id, int qtd_assentos, PontoDeOnibusList *ponto_
     assert(o != NULL);
 
     o->id = onibus_id;
-    o->assentos = (AssentoOnibus **)malloc(qtd_assentos * sizeof(AssentoOnibus *));
+    o->passageiros_list = createList();
     o->qtd_assentos = qtd_assentos;
     o->origem = rand_int(0, ponto_de_onibus_list->length - 1);
     while (ponto_de_onibus_list->items[o->origem]->onibus_ocupando != -1)
@@ -81,16 +59,9 @@ Onibus *create_Onibus(int onibus_id, int qtd_assentos, PontoDeOnibusList *ponto_
 
     ponto_de_onibus_list->items[o->origem]->onibus_ocupando = o->id;
 
-    assert(o->assentos != NULL);
+    assert(o->passageiros_list != NULL);
 
-    for (int i = 0; i < qtd_assentos; i++)
-    {
-        o->assentos[i] = create_AssentoOnibus(-1, onibus_id);
-        o->assentos[i]->ocupacao = -1;
-        o->assentos[i]->id_onibus = onibus_id;
-    }
-
-    return o;
+        return o;
 }
 
 Passageiro *create_Passageiro(int passageiro_id, int qtd_pontos)

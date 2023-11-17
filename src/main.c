@@ -133,11 +133,11 @@ int main()
     }
 
     // INPUT -- A
-    printf("\n- INPUT: Digite o numero de assentos em cada onibus: ");
+    printf("\n- INPUT: Digite o numero de passageiros em cada onibus: ");
     scanf("%d", &A);
     while ((A <= C) || (A >= P))
     {
-        printf("\n-- ERRO: O numero de assentos deve ser maior que o numero de onibus e menor que o numero de passageiros.\n-- Digite outro numero: ");
+        printf("\n-- ERRO: O numero de passageiros deve ser maior que o numero de onibus e menor que o numero de passageiros.\n-- Digite outro numero: ");
         scanf("%d", &A);
     }
 
