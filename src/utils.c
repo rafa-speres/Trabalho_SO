@@ -3,7 +3,7 @@
 #include "utils.h"
 
 // ms em milisegundos
-void sleep(int ms)
+void sleep_ms(unsigned int ms)
 {
   struct timespec sleep_time;
 
@@ -11,6 +11,17 @@ void sleep(int ms)
   sleep_time.tv_nsec = 1000000 * ms;
 
   nanosleep(&sleep_time, NULL);
+}
+
+void busy_wait_ms(unsigned long ms) {
+    clock_t start_time = clock();
+    clock_t elapsed_time;
+
+    clock_t wait_ticks = (clock_t)(ms * CLOCKS_PER_SEC / 1000);
+
+    do {
+        elapsed_time = clock() - start_time;
+    } while (elapsed_time < wait_ticks);
 }
 
 // min e max são inclusos

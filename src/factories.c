@@ -9,8 +9,12 @@ PontoDeOnibus *create_PontoDeOnibus(int id, PassageiroList *passageiros_list)
 {
     PontoDeOnibus *ponto_de_onibus = (PontoDeOnibus *)malloc(sizeof(PontoDeOnibus));
     ponto_de_onibus->passageiros_list = (PassageiroList *)malloc(sizeof(PassageiroList *));
+    ponto_de_onibus->cond_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t *));
     assert(ponto_de_onibus != NULL);
     assert(ponto_de_onibus->passageiros_list != NULL);
+    assert(ponto_de_onibus->cond_lock != NULL);
+
+    pthread_mutex_init(ponto_de_onibus->cond_lock, NULL);
 
     int passageiros_count = 0;
 

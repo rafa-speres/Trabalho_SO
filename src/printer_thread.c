@@ -16,6 +16,10 @@ void *thread_state_printer(void *arg)
 {
   Context *context = (Context *)arg;
 
+  // free(context);
+  // pthread_exit(NULL);
+  // return NULL;
+
   while (isFinished(context->passageiro_list) == false)
   {
     for (int idx = 0; idx < context->pontos_de_onibus_list->length; idx++)
@@ -27,7 +31,7 @@ void *thread_state_printer(void *arg)
       printf("  Passageiros: %d\n", ponto_de_onibus->passageiros_list->length);
     }
 
-    sleep(50);
+    sleep_ms(50);
     clearTerminal();
   }
 

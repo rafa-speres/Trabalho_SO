@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <pthread.h>
 
 #ifndef FACTORIES
 #define FACTORIES
@@ -43,6 +44,7 @@ typedef struct
     int id;
     PassageiroList *passageiros_list;
     int onibus_ocupando; // -1 se tiver vazio
+    pthread_mutex_t* cond_lock;
 } PontoDeOnibus;
 
 typedef struct
