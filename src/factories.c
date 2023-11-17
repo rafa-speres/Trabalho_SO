@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <assert.h>
 #include "factories.h"
 #include "utils.h"
@@ -61,6 +62,7 @@ Passageiro *create_Passageiro(int passageiro_id, int qtd_pontos)
     p->id = passageiro_id;
     p->origem = rand_int(0, qtd_pontos - 1);
     p->destino = rand_int(0, qtd_pontos - 1);
+    p->finalizado = false;
 
     while (p->origem == p->destino)
         p->destino = rand_int(0, qtd_pontos - 1);

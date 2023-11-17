@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #ifndef FACTORIES
 #define FACTORIES
 
@@ -27,6 +29,7 @@ typedef struct
     int id;
     int origem;  // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
     int destino; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
+    bool finalizado;
 } Passageiro;
 
 typedef struct
