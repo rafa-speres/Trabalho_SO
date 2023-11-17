@@ -44,7 +44,11 @@ typedef struct
     int id;
     PassageiroList *passageiros_list;
     int onibus_ocupando; // -1 se tiver vazio
-    pthread_mutex_t* cond_lock;
+    pthread_mutex_t* ponto_de_onibus_mutex;
+    pthread_mutex_t* onibus_management_mutex;
+    pthread_cond_t* onibus_management_lock;
+    pthread_mutex_t* ponto_de_onibus_management_mutex;
+    pthread_cond_t* ponto_de_onibus_management_lock;
 } PontoDeOnibus;
 
 typedef struct
