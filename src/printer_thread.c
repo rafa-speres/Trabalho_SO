@@ -27,22 +27,13 @@ void *thread_state_printer(void *arg)
 
   while (isFinished(context) == false)
   {
-    for (int i = 0; i < context->pontos_de_onibus_list->length; i++)
+    for (int idx = 0; idx < context->pontos_de_onibus_list->length; idx++)
     {
-      PontoDeOnibus *ponto_de_onibus = context->pontos_de_onibus_list->items[i];
-      int passageiros_count = 0;
-
-      for (int j = 0; j < context->passageiro_list->length; j++)
-      {
-        if (context->passageiro_list->items[j]->origem == ponto_de_onibus->id)
-        {
-          passageiros_count++;
-        }
-      }
+      PontoDeOnibus *ponto_de_onibus = context->pontos_de_onibus_list->items[idx];
 
       printf("\nPonto %d)\n", ponto_de_onibus->id);
       printf("  Onibus: %d\n", ponto_de_onibus->onibus_ocupando);
-      printf("  Passageiros: %d\n", passageiros_count);
+      printf("  Passageiros: %d\n", ponto_de_onibus->passageiros_list->length);
     }
 
     sleep(50);

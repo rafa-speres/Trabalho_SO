@@ -141,9 +141,9 @@ int main()
         scanf("%d", &A);
     }
 
-    PontoDeOnibusList *pontos_de_onibus_list = create_many_PontoDeOnibus(S);
-    OnibusList *onibus_list = create_many_Onibus(C, A, pontos_de_onibus_list);
     PassageiroList *passageiros_list = create_many_Passageiro(P, S);
+    PontoDeOnibusList *pontos_de_onibus_list = create_many_PontoDeOnibus(S, passageiros_list);
+    OnibusList *onibus_list = create_many_Onibus(C, A, pontos_de_onibus_list);
     pthread_t ponto_de_onibus_threads_list[S], onibus_threads_list[C], passageiros_threads_list[P], printer_thread;
 
     create_threads(pontos_de_onibus_list, onibus_list, passageiros_list, ponto_de_onibus_threads_list, onibus_threads_list, passageiros_threads_list, &printer_thread);

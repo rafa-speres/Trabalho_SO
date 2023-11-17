@@ -5,15 +5,37 @@
 #include "factories.h"
 #include "utils.h"
 
-PontoDeOnibus *create_PontoDeOnibus(int sent_id)
+PontoDeOnibus *create_PontoDeOnibus(int id, PassageiroList *passageiros_list)
 {
-    PontoDeOnibus *p = (PontoDeOnibus *)malloc(sizeof(PontoDeOnibus));
-    assert(p != NULL);
+    PontoDeOnibus *ponto_de_onibus = (PontoDeOnibus *)malloc(sizeof(PontoDeOnibus));
+    ponto_de_onibus->passageiros_list = (PassageiroList *)malloc(sizeof(PassageiroList *));
+    assert(ponto_de_onibus != NULL);
+    assert(ponto_de_onibus->passageiros_list != NULL);
 
-    p->id = sent_id;
-    p->onibus_ocupando = -1;
+    int passageiros_count = 0;
 
-    return p;
+    for (int idx = 0; idx < passageiros_list->length; idx++)
+    {
+        if (passageiros_list->items[idx]->origem == id)
+        {
+            passageiros_count++;
+        }
+    }
+
+    ponto_de_onibus->id = id;
+    ponto_de_onibus->onibus_ocupando = -1;
+    ponto_de_onibus->passageiros_list->items = (Passageiro **)malloc(passageiros_count * sizeof(Passageiro *));
+    ponto_de_onibus->passageiros_list->length = passageiros_count;
+
+    for (int fromIdx = 0, toIdx = 0; fromIdx < passageiros_list->length; fromIdx++)
+    {
+        if (passageiros_list->items[fromIdx]->origem == id)
+        {
+            ponto_de_onibus->passageiros_list->items[toIdx++] = passageiros_list->items[fromIdx];
+        }
+    }
+
+    return ponto_de_onibus;
 }
 
 AssentoOnibus *create_AssentoOnibus(int ocupacao, int id_onibus)
@@ -70,7 +92,7 @@ Passageiro *create_Passageiro(int passageiro_id, int qtd_pontos)
     return p;
 }
 
-PontoDeOnibusList *create_many_PontoDeOnibus(int length)
+PontoDeOnibusList *create_many_PontoDeOnibus(int length, PassageiroList *passageiros_list)
 {
     PontoDeOnibusList *list = (PontoDeOnibusList *)malloc(sizeof(PontoDeOnibusList));
     list->items = malloc(length * sizeof(PontoDeOnibus *));
@@ -82,7 +104,7 @@ PontoDeOnibusList *create_many_PontoDeOnibus(int length)
 
     for (int i = 0; i < length; i++)
     {
-        list->items[i] = create_PontoDeOnibus(i);
+        list->items[i] = create_PontoDeOnibus(i, passageiros_list);
     }
 
     return list;
