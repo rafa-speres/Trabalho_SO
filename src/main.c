@@ -13,8 +13,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include "factories.h"
-#include "threads.h"
-#include "printer_thread.h"
+#include "threads/threads.h"
 
 void create_threads(
     PontoDeOnibusList *pontos_de_onibus_list,

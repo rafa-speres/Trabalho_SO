@@ -2,7 +2,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <time.h>
-#include "printer_thread.h"
+#include "threads.h"
 #include "factories.h"
 #include "helpers.h"
 #include "utils.h"
@@ -35,7 +35,7 @@ void *thread_state_printer(void *arg)
       printf("  Passageiros: %d\n", ponto_de_onibus->passageiros_list->length);
     }
 
-    sleep_ms(50);
+    sleep_ms(200);
     clearTerminal();
   }
 

@@ -61,23 +61,27 @@ Onibus *create_Onibus(int onibus_id, int qtd_assentos, PontoDeOnibusList *ponto_
 
     assert(o->passageiros_list != NULL);
 
-        return o;
+    return o;
 }
 
 Passageiro *create_Passageiro(int passageiro_id, int qtd_pontos)
 {
-    Passageiro *p = (Passageiro *)malloc(sizeof(Passageiro));
-    assert(p != NULL);
+    Passageiro *passageiro = (Passageiro *)malloc(sizeof(Passageiro));
+    passageiro->passageiro_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+    passageiro->passageiro_lock = (pthread_cond_t *)malloc(sizeof(pthread_cond_t));
+    assert(passageiro != NULL);
+    assert(passageiro->passageiro_mutex != NULL);
+    assert(passageiro->passageiro_lock != NULL);
 
-    p->id = passageiro_id;
-    p->origem = rand_int(0, qtd_pontos - 1);
-    p->destino = rand_int(0, qtd_pontos - 1);
-    p->finalizado = false;
+    passageiro->id = passageiro_id;
+    passageiro->origem = rand_int(0, qtd_pontos - 1);
+    passageiro->destino = rand_int(0, qtd_pontos - 1);
+    passageiro->finalizado = false;
 
-    while (p->origem == p->destino)
-        p->destino = rand_int(0, qtd_pontos - 1);
+    while (passageiro->origem == passageiro->destino)
+        passageiro->destino = rand_int(0, qtd_pontos - 1);
 
-    return p;
+    return passageiro;
 }
 
 PontoDeOnibusList *create_many_PontoDeOnibus(int length, PassageiroList *passageiros_list)
