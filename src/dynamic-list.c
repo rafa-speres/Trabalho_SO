@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <assert.h>
+#include <stdbool.h>
 #include "dynamic-list.h"
 
 #define INITIAL_CAPACITY 8
@@ -45,4 +46,29 @@ void *shiftList(DynamicList *list)
   list->length--;
 
   return item;
+}
+
+// Retorna uma cópia filtrada da lista referencia
+void *filterList(DynamicList *ref, DynamicList *incoming)
+{
+  DynamicList *list = createList();
+
+  for (int i = 0; i < ref->length; i++)
+  {
+    bool isContained = false;
+ 
+    for (int j = 0; j < incoming->length; j++)
+    {
+      if (ref->items[i] == incoming->items[j]) {
+        isContained = true;
+        break;
+      }
+    }
+
+    if (isContained == false) {
+      appendList(list, ref->items[i]);
+    }
+  }
+
+  return list;
 }

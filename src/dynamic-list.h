@@ -11,5 +11,6 @@ typedef struct
 DynamicList *createList();
 void appendList(DynamicList *list, void *item);
 void *shiftList(DynamicList *list);
+void *filterList(DynamicList *ref, DynamicList *incoming);
 
 #endif

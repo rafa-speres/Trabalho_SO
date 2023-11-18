@@ -2,7 +2,15 @@
     "files.associations": {
         "functions.h": "c",
         "stdio.h": "c",
-        "assert.h": "c"
+        "assert.h": "c",
+        "stdlib.h": "c",
+        "unistd.h": "c",
+        "printer_thread.h": "c",
+        "utils.h": "c",
+        "stdbool.h": "c",
+        "pthread.h": "c",
+        "factories.h": "c",
+        "dynamic-list.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

@@ -2,6 +2,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "factories.h"
 #include "helpers.h"
 #include "utils.h"
@@ -60,19 +61,28 @@ void *thread_PontoDeOnibus(void *arg)
   {
     pthread_mutex_lock(this->ponto_de_onibus_management_mutex);
     pthread_cond_wait(this->ponto_de_onibus_management_lock, this->ponto_de_onibus_management_mutex);
-    
-    // printf("PONTO %d RECEBEU %d\n", this->id, this->onibus_ocupando);
-    
-    Onibus* onibus = ctx->onibus_list->items[this->onibus_ocupando];
 
-    while(onibus->passageiros_list->length < onibus->qtd_assentos && this->passageiros_list->length > 0) {
+    // printf("PONTO %d RECEBEU %d\n", this->id, this->onibus_ocupando);
+
+    Onibus *onibus = ctx->onibus_list->items[this->onibus_ocupando];
+
+    DynamicList* landing_passageiros_list = extractLandingPassageiros(onibus, this);
+
+    for (int idx = 0; idx < landing_passageiros_list->length; idx++) {
+      Passageiro * passageiro = (Passageiro *) landing_passageiros_list->items[idx]; 
+      
+      passageiro->finalizado = true;
+    }
+
+    while (onibus->passageiros_list->length < onibus->qtd_assentos && this->passageiros_list->length > 0)
+    {
       appendList(onibus->passageiros_list, shiftList(this->passageiros_list));
     }
 
     busy_wait_ms(2000);
-    
+
     // printf("PONTO %d ENTREGOU %d\n", this->id, this->onibus_ocupando);
-    
+
     pthread_cond_signal(this->onibus_management_lock);
     pthread_mutex_unlock(this->ponto_de_onibus_management_mutex);
   }
