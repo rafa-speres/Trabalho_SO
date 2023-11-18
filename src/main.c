@@ -74,11 +74,17 @@ void join_threads(
     pthread_t passageiros_threads_list[],
     pthread_t *printer_thread)
 {
-    for (int i = 0; i < pontos_de_onibus_list->length; i++)
+    if (pthread_join(*printer_thread, NULL) != 0)
     {
-        if (pthread_join(ponto_de_onibus_threads_list[i], NULL) != 0)
+        perror("pthread_join(printer_thread) error");
+        exit(3);
+    }
+
+    for (int i = 0; i < passageiros_list->length; i++)
+    {
+        if (pthread_join(passageiros_threads_list[i], NULL) != 0)
         {
-            perror("pthread_join(thread_PontoDeOnibus) error");
+            perror("pthread_join(thread_Passageiro) error");
             exit(3);
         }
     }
@@ -92,19 +98,13 @@ void join_threads(
         }
     }
 
-    for (int i = 0; i < passageiros_list->length; i++)
+    for (int i = 0; i < pontos_de_onibus_list->length; i++)
     {
-        if (pthread_join(passageiros_threads_list[i], NULL) != 0)
+        if (pthread_join(ponto_de_onibus_threads_list[i], NULL) != 0)
         {
-            perror("pthread_join(thread_Passageiro) error");
+            perror("pthread_join(thread_PontoDeOnibus) error");
             exit(3);
         }
-    }
-
-    if (pthread_join(*printer_thread, NULL) != 0)
-    {
-        perror("pthread_join(printer_thread) error");
-        exit(3);
     }
 }
 
@@ -139,6 +139,8 @@ int main()
         printf("\n-- ERRO: O numero de passageiros deve ser maior que o numero de onibus e menor que o numero de passageiros.\n-- Digite outro numero: ");
         scanf("%d", &A);
     }
+
+    printf("\n");
 
     PassageiroList *passageiros_list = create_many_Passageiro(P, S);
     PontoDeOnibusList *pontos_de_onibus_list = create_many_PontoDeOnibus(S, passageiros_list);

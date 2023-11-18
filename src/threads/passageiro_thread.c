@@ -8,6 +8,7 @@
 #include "dynamic_list.h"
 #include "helpers.h"
 #include "utils.h"
+#include "debug.h"
 
 PontoDeOnibus *getPassageiroPontoDeOnibus(PassageiroContext *ctx)
 {
@@ -23,7 +24,6 @@ void *thread_Passageiro(void *arg)
 {
   PassageiroContext *ctx = (PassageiroContext *)arg;
   Passageiro *this = ctx->this;
-  // printf("Passageiro %d | origem: %d | destino: %d\n", ctx->this->id, ctx->this->origem, ctx->this->destino);
 
   pthread_mutex_lock(this->passageiro_mutex);
   pthread_cond_wait(this->passageiro_lock, this->passageiro_mutex);
@@ -31,9 +31,13 @@ void *thread_Passageiro(void *arg)
   PontoDeOnibus *ponto_de_onibus = getPassageiroPontoDeOnibus(ctx);
   Onibus *onibus = getPassageiroOnibus(ctx);
 
+  debug_printf("PASSAGEIRO %d DESEMBARCANDO DO ONIBUS %d NO PONTO %d\n", this->id, onibus->id, ponto_de_onibus->id);
+
   removeFromList(onibus->passageiros_list, this);
 
   busy_wait_ms(500);
+
+  debug_printf("PASSAGEIRO %d FINALIZANDO\n", this->id);
 
   this->finalizado = true;
 

@@ -16,9 +16,11 @@ void *thread_state_printer(void *arg)
 {
   Context *ctx = (Context *)arg;
 
-  // free(ctx);
-  // pthread_exit(NULL);
-  // return NULL;
+#if DEBUG
+  free(ctx);
+  pthread_exit(NULL);
+  return NULL;
+#endif
 
   while (isFinished(ctx->passageiro_list) == false)
   {

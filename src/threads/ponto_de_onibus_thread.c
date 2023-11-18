@@ -7,6 +7,7 @@
 #include "factories.h"
 #include "helpers.h"
 #include "utils.h"
+#include "debug.h"
 
 void *thread_PontoDeOnibus(void *arg)
 {
@@ -18,7 +19,7 @@ void *thread_PontoDeOnibus(void *arg)
     pthread_mutex_lock(this->ponto_de_onibus_management_mutex);
     pthread_cond_wait(this->ponto_de_onibus_management_lock, this->ponto_de_onibus_management_mutex);
 
-    // printf("PONTO %d RECEBEU %d\n", this->id, this->onibus_ocupando);
+    debug_printf("PONTO %d RECEBEU ONIBUS %d\n", this->id, this->onibus_ocupando);
 
     Onibus *onibus = ctx->onibus_list->items[this->onibus_ocupando];
 
@@ -38,17 +39,21 @@ void *thread_PontoDeOnibus(void *arg)
 
     while (onibus->passageiros_list->length < onibus->qtd_assentos && this->passageiros_list->length > 0)
     {
-      appendList(onibus->passageiros_list, shiftList(this->passageiros_list));
+      Passageiro* passageiro = (Passageiro *) shiftList(this->passageiros_list);
+      
+      debug_printf("PASSAGEIRO %d ERBACANDO NO ONIBUS %d NO PONTO %d\n", passageiro->id, onibus->id, this->id);
+
+      appendList(onibus->passageiros_list, passageiro);
     }
 
     busy_wait_ms(500);
 
-    // printf("PONTO %d ENTREGOU %d\n", this->id, this->onibus_ocupando);
+    debug_printf("PONTO %d DESPACHOU ONIBUS %d\n", this->id, this->onibus_ocupando);
 
     pthread_cond_signal(this->onibus_management_lock);
     pthread_mutex_unlock(this->ponto_de_onibus_management_mutex);
   }
-
+  
   sem_destroy(this->landing_passageiros_semaphore);
 
   free(ctx);

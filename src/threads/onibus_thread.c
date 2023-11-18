@@ -5,13 +5,13 @@
 #include <stdbool.h>
 #include "factories.h"
 #include "helpers.h"
+#include "debug.h"
 #include "utils.h"
 
 void *thread_Onibus(void *arg)
 {
   OnibusContext *ctx = (OnibusContext *)arg;
   Onibus *this = ctx->this;
-  // printf("Onibus %d | origem: %d | destino: %d\n", ctx->this->id, ctx->this->origem, ctx->this->destino);
 
   while (isFinished(ctx->passageiro_list) == false)
   {
@@ -30,11 +30,9 @@ void *thread_Onibus(void *arg)
     this->destino = -1;
     ponto_de_onibus->onibus_ocupando = this->id;
 
-    // printf("ONIBUS %d ENTROU EM %d\n", this->id, ponto_de_onibus->id);
+    debug_printf("ONIBUS %d ENTROU EM %d\n", this->id, ponto_de_onibus->id);
 
     pthread_mutex_lock(ponto_de_onibus->onibus_management_mutex);
-
-    // printf("ONIBUS %d ENTROU EM %d (MANAGEMENT AREA)\n", this->id, ponto_de_onibus->id);
 
     pthread_cond_signal(ponto_de_onibus->ponto_de_onibus_management_lock);
     pthread_cond_wait(ponto_de_onibus->onibus_management_lock, ponto_de_onibus->onibus_management_mutex);
@@ -44,7 +42,7 @@ void *thread_Onibus(void *arg)
     pthread_mutex_unlock(ponto_de_onibus->onibus_management_mutex);
     pthread_mutex_unlock(ponto_de_onibus->ponto_de_onibus_mutex);
 
-    // printf("ONIBUS %d SAIU DE %d\n", this->id, ponto_de_onibus->id);
+    debug_printf("ONIBUS %d SAIU DE %d\n", this->id, ponto_de_onibus->id);
   }
 
   free(ctx);
