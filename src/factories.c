@@ -15,6 +15,7 @@ PontoDeOnibus *create_PontoDeOnibus(int id, PassageiroList *passageiros_list)
     ponto_de_onibus->onibus_management_lock = (pthread_cond_t *)malloc(sizeof(pthread_cond_t));
     ponto_de_onibus->ponto_de_onibus_management_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
     ponto_de_onibus->ponto_de_onibus_management_lock = (pthread_cond_t *)malloc(sizeof(pthread_cond_t));
+    ponto_de_onibus->landing_passageiros_semaphore = (sem_t *)malloc(sizeof(sem_t));
 
     assert(ponto_de_onibus != NULL);
     assert(ponto_de_onibus->passageiros_list != NULL);
@@ -23,12 +24,14 @@ PontoDeOnibus *create_PontoDeOnibus(int id, PassageiroList *passageiros_list)
     assert(ponto_de_onibus->onibus_management_lock != NULL);
     assert(ponto_de_onibus->ponto_de_onibus_management_mutex != NULL);
     assert(ponto_de_onibus->ponto_de_onibus_management_lock != NULL);
+    assert(ponto_de_onibus->landing_passageiros_semaphore != NULL);
 
     pthread_mutex_init(ponto_de_onibus->ponto_de_onibus_mutex, NULL);
     pthread_mutex_init(ponto_de_onibus->onibus_management_mutex, NULL);
     pthread_cond_init(ponto_de_onibus->onibus_management_lock, NULL);
     pthread_mutex_init(ponto_de_onibus->ponto_de_onibus_management_mutex, NULL);
     pthread_cond_init(ponto_de_onibus->ponto_de_onibus_management_lock, NULL);
+    sem_init(ponto_de_onibus->landing_passageiros_semaphore, 0, 0);
 
     ponto_de_onibus->id = id;
     ponto_de_onibus->onibus_ocupando = -1;
@@ -72,6 +75,9 @@ Passageiro *create_Passageiro(int passageiro_id, int qtd_pontos)
     assert(passageiro != NULL);
     assert(passageiro->passageiro_mutex != NULL);
     assert(passageiro->passageiro_lock != NULL);
+
+    pthread_mutex_init(passageiro->passageiro_mutex, NULL);
+    pthread_cond_init(passageiro->passageiro_lock, NULL);
 
     passageiro->id = passageiro_id;
     passageiro->origem = rand_int(0, qtd_pontos - 1);

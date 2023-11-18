@@ -28,7 +28,8 @@ void *thread_state_printer(void *arg)
 
       printf("\nPonto %d)\n", ponto_de_onibus->id);
       printf("  Onibus: %d", ponto_de_onibus->onibus_ocupando);
-      if (ponto_de_onibus->onibus_ocupando != -1) {
+      if (ponto_de_onibus->onibus_ocupando != -1)
+      {
         printf(" | Passageiros: %d", ctx->onibus_list->items[ponto_de_onibus->onibus_ocupando]->passageiros_list->length);
       }
       printf("\n");
@@ -38,6 +39,8 @@ void *thread_state_printer(void *arg)
     sleep_ms(200);
     clearTerminal();
   }
+
+  printf("FIM\n");
 
   free(ctx);
   pthread_exit(NULL);

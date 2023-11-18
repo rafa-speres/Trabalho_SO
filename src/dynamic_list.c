@@ -48,27 +48,24 @@ void *shiftList(DynamicList *list)
   return item;
 }
 
-// Retorna uma cópia filtrada da lista referencia
-void *filterList(DynamicList *ref, DynamicList *incoming)
+void removeFromList(DynamicList *list, void *item)
 {
-  DynamicList *list = createList();
+  if (list->length == 0) return;
 
-  for (int i = 0; i < ref->length; i++)
-  {
-    bool isContained = false;
- 
-    for (int j = 0; j < incoming->length; j++)
-    {
-      if (ref->items[i] == incoming->items[j]) {
-        isContained = true;
-        break;
-      }
-    }
+  int idx = 0;
 
-    if (isContained == false) {
-      appendList(list, ref->items[i]);
+  while (idx < list->length) {
+    if (list->items[idx] == item) {
+      list->items[idx] = NULL;
+      break;
     }
+    
+    idx++;
   }
 
-  return list;
+  for (int i = idx; i < list->length; i++) {
+    list->items[i] = list->items[i + 1];
+  }
+
+  list->length--;
 }

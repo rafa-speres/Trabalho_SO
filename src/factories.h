@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <pthread.h>
+#include <semaphore.h>
 #include "dynamic_list.h"
 
 #ifndef FACTORIES
@@ -46,6 +47,7 @@ typedef struct
     pthread_cond_t *onibus_management_lock;
     pthread_mutex_t *ponto_de_onibus_management_mutex;
     pthread_cond_t *ponto_de_onibus_management_lock;
+    sem_t *landing_passageiros_semaphore; // como não sabemos quantos passageiros desembarcarão com o auxílio do sem, a inicialização é feita dentro da thread
 } PontoDeOnibus;
 
 typedef struct

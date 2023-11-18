@@ -4,7 +4,7 @@
 #include "factories.h"
 #include "dynamic_list.h"
 
-DynamicList *extractLandingPassageiros(Onibus *onibus, PontoDeOnibus *ponto_de_onibus)
+DynamicList *getLandingPassageiros(Onibus *onibus, PontoDeOnibus *ponto_de_onibus)
 {
   DynamicList *landing_passageiros_list = createList();
 
@@ -17,10 +17,6 @@ DynamicList *extractLandingPassageiros(Onibus *onibus, PontoDeOnibus *ponto_de_o
       appendList(landing_passageiros_list, passageiro);
     }
   }
-
-  DynamicList *new_onibus_passageiros_list = filterList(onibus->passageiros_list, landing_passageiros_list);
-  free(onibus->passageiros_list);
-  onibus->passageiros_list = new_onibus_passageiros_list;
 
   return landing_passageiros_list;
 }
