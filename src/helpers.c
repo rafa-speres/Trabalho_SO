@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "helpers.h"
 #include "factories.h"
-#include "dynamic-list.h"
+#include "dynamic_list.h"
 
 DynamicList *extractLandingPassageiros(Onibus *onibus, PontoDeOnibus *ponto_de_onibus)
 {

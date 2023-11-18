@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <pthread.h>
-#include "dynamic-list.h"
+#include "dynamic_list.h"
 
 #ifndef FACTORIES
 #define FACTORIES

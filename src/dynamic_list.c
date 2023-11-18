@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdbool.h>
-#include "dynamic-list.h"
+#include "dynamic_list.h"
 
 #define INITIAL_CAPACITY 8
 

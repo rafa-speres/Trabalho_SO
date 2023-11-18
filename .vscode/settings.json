@@ -10,7 +10,7 @@
         "stdbool.h": "c",
         "pthread.h": "c",
         "factories.h": "c",
-        "dynamic-list.h": "c"
+        "dynamic_list.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

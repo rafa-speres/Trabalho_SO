@@ -4,7 +4,7 @@
 #include <assert.h>
 #include "factories.h"
 #include "utils.h"
-#include "dynamic-list.h"
+#include "dynamic_list.h"
 
 PontoDeOnibus *create_PontoDeOnibus(int id, PassageiroList *passageiros_list)
 {
