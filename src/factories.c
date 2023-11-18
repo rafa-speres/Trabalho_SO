@@ -10,11 +10,11 @@ PontoDeOnibus *create_PontoDeOnibus(int id, PassageiroList *passageiros_list)
 {
     PontoDeOnibus *ponto_de_onibus = (PontoDeOnibus *)malloc(sizeof(PontoDeOnibus));
     ponto_de_onibus->passageiros_list = createList();
-    ponto_de_onibus->ponto_de_onibus_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t *));
-    ponto_de_onibus->onibus_management_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t *));
-    ponto_de_onibus->onibus_management_lock = (pthread_cond_t *)malloc(sizeof(pthread_cond_t *));
-    ponto_de_onibus->ponto_de_onibus_management_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t *));
-    ponto_de_onibus->ponto_de_onibus_management_lock = (pthread_cond_t *)malloc(sizeof(pthread_cond_t *));
+    ponto_de_onibus->ponto_de_onibus_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+    ponto_de_onibus->onibus_management_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+    ponto_de_onibus->onibus_management_lock = (pthread_cond_t *)malloc(sizeof(pthread_cond_t));
+    ponto_de_onibus->ponto_de_onibus_management_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+    ponto_de_onibus->ponto_de_onibus_management_lock = (pthread_cond_t *)malloc(sizeof(pthread_cond_t));
 
     assert(ponto_de_onibus != NULL);
     assert(ponto_de_onibus->passageiros_list != NULL);

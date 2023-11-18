@@ -20,6 +20,8 @@ typedef struct
     int origem;  // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
     int destino; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
     bool finalizado;
+    pthread_mutex_t *passageiro_mutex;
+    pthread_cond_t *passageiro_lock;
 } Passageiro;
 
 typedef struct
@@ -51,12 +53,6 @@ typedef struct
     PontoDeOnibus **items;
     int length;
 } PontoDeOnibusList;
-
-typedef struct
-{
-    void **items;
-    int length;
-} GenericList;
 
 typedef struct
 {
