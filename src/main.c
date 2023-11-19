@@ -98,6 +98,12 @@ void join_threads(
         }
     }
 
+    for (int i = 0; i < pontos_de_onibus_list->length; i++) {
+        if (pontos_de_onibus_list->items[i]->finalizado == false) {
+            pthread_cond_signal(pontos_de_onibus_list->items[i]->ponto_de_onibus_management_lock);
+        }
+    }
+
     for (int i = 0; i < pontos_de_onibus_list->length; i++)
     {
         if (pthread_join(ponto_de_onibus_threads_list[i], NULL) != 0)

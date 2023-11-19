@@ -25,9 +25,9 @@ void *thread_Onibus(void *arg)
       busy_wait_ms(rand_int(500, 1000));
     }
 
-    PontoDeOnibus *ponto_de_onibus = ctx->pontos_de_onibus_list->items[this->origem];
     this->origem = this->destino;
     this->destino = -1;
+    PontoDeOnibus *ponto_de_onibus = ctx->pontos_de_onibus_list->items[this->origem];
     ponto_de_onibus->onibus_ocupando = this->id;
 
     debug_printf("ONIBUS %d ENTROU EM %d\n", this->id, ponto_de_onibus->id);
@@ -44,6 +44,8 @@ void *thread_Onibus(void *arg)
 
     debug_printf("ONIBUS %d SAIU DE %d\n", this->id, ponto_de_onibus->id);
   }
+
+  debug_printf("ONIBUS %d FINALIZOU\n", this->id);
 
   free(ctx);
   pthread_exit(NULL);

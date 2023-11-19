@@ -17,7 +17,14 @@ void *thread_PontoDeOnibus(void *arg)
   while (isFinished(ctx->passageiro_list) == false)
   {
     pthread_mutex_lock(this->ponto_de_onibus_management_mutex);
+    debug_printf("PONTO %d ESTÁ LIVRE PARA RECEBER ONIBUS\n", this->id);
     pthread_cond_wait(this->ponto_de_onibus_management_lock, this->ponto_de_onibus_management_mutex);
+
+    if (this->onibus_ocupando == -1)
+    {
+      pthread_mutex_unlock(this->ponto_de_onibus_management_mutex);
+      break;
+    }
 
     debug_printf("PONTO %d RECEBEU ONIBUS %d\n", this->id, this->onibus_ocupando);
 
@@ -39,8 +46,8 @@ void *thread_PontoDeOnibus(void *arg)
 
     while (onibus->passageiros_list->length < onibus->qtd_assentos && this->passageiros_list->length > 0)
     {
-      Passageiro* passageiro = (Passageiro *) shiftList(this->passageiros_list);
-      
+      Passageiro *passageiro = (Passageiro *)shiftList(this->passageiros_list);
+
       debug_printf("PASSAGEIRO %d ERBACANDO NO ONIBUS %d NO PONTO %d\n", passageiro->id, onibus->id, this->id);
 
       appendList(onibus->passageiros_list, passageiro);
@@ -53,8 +60,12 @@ void *thread_PontoDeOnibus(void *arg)
     pthread_cond_signal(this->onibus_management_lock);
     pthread_mutex_unlock(this->ponto_de_onibus_management_mutex);
   }
-  
+
   sem_destroy(this->landing_passageiros_semaphore);
+
+  debug_printf("PONTO %d FINALIZOU\n", this->id);
+
+  this->finalizado = true;
 
   free(ctx);
   pthread_exit(NULL);

@@ -35,6 +35,7 @@ PontoDeOnibus *create_PontoDeOnibus(int id, PassageiroList *passageiros_list)
 
     ponto_de_onibus->id = id;
     ponto_de_onibus->onibus_ocupando = -1;
+    ponto_de_onibus->finalizado = false;
 
     for (int idx = 0; idx < passageiros_list->length; idx++)
     {

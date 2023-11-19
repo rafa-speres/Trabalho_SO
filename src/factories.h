@@ -48,6 +48,7 @@ typedef struct
     pthread_mutex_t *ponto_de_onibus_management_mutex;
     pthread_cond_t *ponto_de_onibus_management_lock;
     sem_t *landing_passageiros_semaphore; // como não sabemos quantos passageiros desembarcarão com o auxílio do sem, a inicialização é feita dentro da thread
+    bool finalizado;
 } PontoDeOnibus;
 
 typedef struct
