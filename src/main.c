@@ -5,6 +5,9 @@
 - Henrique Gualberto Marques, 13692380
 - Gustavo Alves da Silva Souza, 13727485
 */
+// para compilar: make all ou gcc -o main.run *.c ./threads/*.c -pthread -Wall -I .
+// para executar: make run ou ./main.run
+
 
 #include <stdio.h>
 #include <stdlib.h>
