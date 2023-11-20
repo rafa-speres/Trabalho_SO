@@ -61,7 +61,7 @@ struct tm *getCurrentTime()
 void savePassageiroData(int passageiro_id, struct tm *data_inicio, struct tm *data_saida, struct tm *data_chegada, int ponto_destino_id)
 {
   char filename[64];
-  sprintf(filename, "./trace/passageiro%d.trace", passageiro_id);
+  sprintf(filename, "./traces/passageiro%d.trace", passageiro_id);
   FILE *file = fopen(filename, "w");
 
   if (file == NULL)
