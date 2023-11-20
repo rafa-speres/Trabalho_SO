@@ -9,6 +9,9 @@ compile-debug:
 run:
 	@./main.run
 
+clear:
+	@rm ./trace/*.trace
+
 test:
 	@make all --no-print-directory && make run --no-print-directory < ./testes/1.in  
 
