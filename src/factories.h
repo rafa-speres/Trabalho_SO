@@ -20,6 +20,9 @@ typedef struct
     int id;
     int origem;  // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
     int destino; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
+    struct tm *data_inicio;
+    struct tm *data_saida;
+    struct tm *data_chegada;
     bool finalizado;
     pthread_mutex_t *passageiro_mutex;
     pthread_cond_t *passageiro_lock;

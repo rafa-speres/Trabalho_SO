@@ -1,5 +1,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
+#include <time.h>
+#include <stdio.h>
 #include "helpers.h"
 #include "factories.h"
 #include "dynamic_list.h"
@@ -32,4 +34,48 @@ bool isFinished(PassageiroList *passageiro_list)
   }
 
   return true;
+}
+
+struct tm *getCurrentTime()
+{
+  time_t currentTime;
+  struct tm *localTime;
+
+  time(&currentTime);
+  localTime = localtime(&currentTime);
+
+  // Make a copy of the struct tm
+  struct tm *result = (struct tm *)malloc(sizeof(struct tm));
+
+  if (result == NULL)
+  {
+    printf("Error allocation memory for current time\n");
+    exit(1);
+  }
+
+  *result = *localTime;
+
+  return result;
+}
+
+void savePassageiroData(int passageiro_id, struct tm *data_inicio, struct tm *data_saida, struct tm *data_chegada, int ponto_destino_id)
+{
+  char filename[64];
+  sprintf(filename, "./trace/passageiro%d.trace", passageiro_id);
+  FILE *file = fopen(filename, "w");
+
+  if (file == NULL)
+  {
+    printf("Error opening file passageiro%d.trace file\n", passageiro_id);
+    exit(1);
+  }
+
+  fprintf(file, "INÍCIO, SAÍDA, CHEGADA, PONTO_DESTINO\n");
+  fprintf(file, "%d:%d, %d:%d, %d:%d, %d",
+          data_inicio->tm_min, data_inicio->tm_sec,
+          data_saida->tm_min, data_saida->tm_sec,
+          data_chegada->tm_min, data_chegada->tm_sec,
+          ponto_destino_id);
+
+  fclose(file);
 }

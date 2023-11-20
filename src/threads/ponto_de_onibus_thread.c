@@ -43,6 +43,8 @@ void *thread_PontoDeOnibus(void *arg)
     {
       Passageiro *passageiro = (Passageiro *)shiftList(this->passageiros_list);
 
+      passageiro->data_saida = getCurrentTime();
+
       debug_printf("PASSAGEIRO %d EMBARCANDO NO ONIBUS %d NO PONTO %d\n", passageiro->id, onibus->id, this->id);
 
       appendList(onibus->passageiros_list, passageiro);
