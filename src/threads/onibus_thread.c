@@ -8,7 +8,7 @@
 #include "debug.h"
 #include "utils.h"
 
-void runUntilLockBusStop(OnibusContext *ctx)
+bool runUntilLockBusStop(OnibusContext *ctx)
 {
   Onibus *onibus = ctx->this;
 
@@ -25,7 +25,7 @@ void runUntilLockBusStop(OnibusContext *ctx)
     busy_wait_ms(rand_int(500, 1000));
   }
 
-  return;
+  return true;
 }
 
 void *thread_Onibus(void *arg)
@@ -33,10 +33,8 @@ void *thread_Onibus(void *arg)
   OnibusContext *ctx = (OnibusContext *)arg;
   Onibus *this = ctx->this;
 
-  while (isFinished(ctx->passageiro_list) == false)
+  while (runUntilLockBusStop(ctx) && isFinished(ctx->passageiro_list) == false)
   {
-    runUntilLockBusStop(ctx);
-
     this->origem = this->destino;
     this->destino = -1;
     PontoDeOnibus *ponto_de_onibus = ctx->pontos_de_onibus_list->items[this->origem];
