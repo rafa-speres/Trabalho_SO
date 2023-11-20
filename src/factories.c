@@ -48,7 +48,7 @@ PontoDeOnibus *create_PontoDeOnibus(int id, PassageiroList *passageiros_list)
     return ponto_de_onibus;
 }
 
-Onibus *create_Onibus(int onibus_id, int qtd_assentos, PontoDeOnibusList *ponto_de_onibus_list)
+Onibus *create_Onibus(int onibus_id, int qtd_assentos)
 {
     Onibus *o = (Onibus *)malloc(sizeof(Onibus));
     assert(o != NULL);
@@ -56,12 +56,8 @@ Onibus *create_Onibus(int onibus_id, int qtd_assentos, PontoDeOnibusList *ponto_
     o->id = onibus_id;
     o->passageiros_list = createList();
     o->qtd_assentos = qtd_assentos;
-    o->origem = rand_int(0, ponto_de_onibus_list->length - 1);
-    while (ponto_de_onibus_list->items[o->origem]->onibus_ocupando != -1)
-        o->origem = rand_int(0, ponto_de_onibus_list->length - 1);
+    o->origem = -1;
     o->destino = -1;
-
-    ponto_de_onibus_list->items[o->origem]->onibus_ocupando = o->id;
 
     assert(o->passageiros_list != NULL);
 
@@ -109,7 +105,7 @@ PontoDeOnibusList *create_many_PontoDeOnibus(int length, PassageiroList *passage
     return list;
 }
 
-OnibusList *create_many_Onibus(int length, int qtd_assentos, PontoDeOnibusList *ponto_de_onibus_list)
+OnibusList *create_many_Onibus(int length, int qtd_assentos)
 {
     OnibusList *list = (OnibusList *)malloc(sizeof(OnibusList));
     list->items = (Onibus **)malloc(length * sizeof(Onibus *));
@@ -121,7 +117,7 @@ OnibusList *create_many_Onibus(int length, int qtd_assentos, PontoDeOnibusList *
 
     for (int i = 0; i < length; i++)
     {
-        list->items[i] = create_Onibus(i, qtd_assentos, ponto_de_onibus_list);
+        list->items[i] = create_Onibus(i, qtd_assentos);
     }
 
     return list;

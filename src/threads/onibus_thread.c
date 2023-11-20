@@ -8,6 +8,26 @@
 #include "debug.h"
 #include "utils.h"
 
+void runUntilLockBusStop(OnibusContext *ctx)
+{
+  Onibus *onibus = ctx->this;
+
+  if (onibus->origem == -1)
+    onibus->destino = rand_int(0, ctx->pontos_de_onibus_list->length - 1);
+  else
+    onibus->destino = next_circular_idx(onibus->origem, ctx->pontos_de_onibus_list->length);
+
+  busy_wait_ms(rand_int(500, 1000));
+
+  while (pthread_mutex_trylock(ctx->pontos_de_onibus_list->items[onibus->destino]->ponto_de_onibus_mutex) != 0)
+  {
+    onibus->destino = next_circular_idx(onibus->destino, ctx->pontos_de_onibus_list->length);
+    busy_wait_ms(rand_int(500, 1000));
+  }
+
+  return;
+}
+
 void *thread_Onibus(void *arg)
 {
   OnibusContext *ctx = (OnibusContext *)arg;
@@ -15,15 +35,7 @@ void *thread_Onibus(void *arg)
 
   while (isFinished(ctx->passageiro_list) == false)
   {
-    this->destino = next_circular_idx(this->origem, ctx->pontos_de_onibus_list->length);
-
-    busy_wait_ms(rand_int(500, 1000));
-
-    while (pthread_mutex_trylock(ctx->pontos_de_onibus_list->items[this->destino]->ponto_de_onibus_mutex) != 0)
-    {
-      this->destino = next_circular_idx(this->destino, ctx->pontos_de_onibus_list->length);
-      busy_wait_ms(rand_int(500, 1000));
-    }
+    runUntilLockBusStop(ctx);
 
     this->origem = this->destino;
     this->destino = -1;

@@ -29,26 +29,21 @@ void *thread_PontoDeOnibus(void *arg)
     debug_printf("PONTO %d RECEBEU ONIBUS %d\n", this->id, this->onibus_ocupando);
 
     Onibus *onibus = ctx->onibus_list->items[this->onibus_ocupando];
-
     DynamicList *landing_passageiros_list = getLandingPassageiros(onibus, this);
 
-    if (landing_passageiros_list->length > 0)
+    for (int idx = 0; idx < landing_passageiros_list->length; idx++)
     {
+      Passageiro *passageiro = (Passageiro *)landing_passageiros_list->items[idx];
 
-      for (int idx = 0; idx < landing_passageiros_list->length; idx++)
-      {
-        Passageiro *passageiro = (Passageiro *)landing_passageiros_list->items[idx];
-
-        pthread_cond_signal(passageiro->passageiro_lock);
-        sem_wait(this->landing_passageiros_semaphore);
-      }
+      pthread_cond_signal(passageiro->passageiro_lock);
+      sem_wait(this->landing_passageiros_semaphore);
     }
 
     while (onibus->passageiros_list->length < onibus->qtd_assentos && this->passageiros_list->length > 0)
     {
       Passageiro *passageiro = (Passageiro *)shiftList(this->passageiros_list);
 
-      debug_printf("PASSAGEIRO %d ERBACANDO NO ONIBUS %d NO PONTO %d\n", passageiro->id, onibus->id, this->id);
+      debug_printf("PASSAGEIRO %d EMBARCANDO NO ONIBUS %d NO PONTO %d\n", passageiro->id, onibus->id, this->id);
 
       appendList(onibus->passageiros_list, passageiro);
     }

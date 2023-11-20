@@ -90,7 +90,7 @@ typedef struct
 
 // Funcoes ponto de onibus
 PontoDeOnibusList *create_many_PontoDeOnibus(int length, PassageiroList *passageiros_list);
-OnibusList *create_many_Onibus(int length, int qtd_assentos, PontoDeOnibusList *ponto_de_onibus_list);
+OnibusList *create_many_Onibus(int length, int qtd_assentos);
 PassageiroList *create_many_Passageiro(int length, int qtd_pontos);
 PontoDeOnibusContext *create_PontoDeOnibusContext(PontoDeOnibus *this, PontoDeOnibusList *pontos_de_onibus_list, OnibusList *onibus_list, PassageiroList *passageiro_list);
 OnibusContext *create_OnibusContext(Onibus *this, PontoDeOnibusList *pontos_de_onibus_list, OnibusList *onibus_list, PassageiroList *passageiro_list);
