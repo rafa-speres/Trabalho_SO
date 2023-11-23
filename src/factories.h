@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <sys/time.h>
 #include "dynamic_list.h"
 
 #ifndef FACTORIES
@@ -13,6 +14,8 @@ typedef struct
     int qtd_assentos;
     int origem;  // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
     int destino; // pontos estão indexados em 0, i.e, o primeiro ponto é o 0
+    struct timeval *data_saida;
+    struct timeval *data_chegada; 
 } Onibus;
 
 typedef struct

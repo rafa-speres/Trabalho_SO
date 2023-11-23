@@ -50,7 +50,7 @@ void *thread_PontoDeOnibus(void *arg)
       appendList(onibus->passageiros_list, passageiro);
     }
 
-    busy_wait_ms(500);
+    busy_wait_ms(5000);
 
     debug_printf("PONTO %d DESPACHOU ONIBUS %d\n", this->id, this->onibus_ocupando);
 

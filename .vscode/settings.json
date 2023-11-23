@@ -11,7 +11,8 @@
         "pthread.h": "c",
         "factories.h": "c",
         "dynamic_list.h": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "helpers.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

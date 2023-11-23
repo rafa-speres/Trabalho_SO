@@ -51,7 +51,11 @@ PontoDeOnibus *create_PontoDeOnibus(int id, PassageiroList *passageiros_list)
 Onibus *create_Onibus(int onibus_id, int qtd_assentos)
 {
     Onibus *o = (Onibus *)malloc(sizeof(Onibus));
+    o->data_saida = (struct timeval *)malloc(sizeof(struct timeval));
+    o->data_chegada = (struct timeval *)malloc(sizeof(struct timeval));
     assert(o != NULL);
+    assert(o->data_saida != NULL);
+    assert(o->data_saida != NULL);
 
     o->id = onibus_id;
     o->passageiros_list = createList();

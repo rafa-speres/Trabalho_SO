@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/time.h>
 #include <stdio.h>
 #include "helpers.h"
 #include "factories.h"
@@ -56,6 +57,21 @@ struct tm *getCurrentTime()
   *result = *localTime;
 
   return result;
+}
+
+void getCurrentTimeMs(struct timeval * time)
+{
+  gettimeofday(time, NULL);
+}
+
+void getIncrementedTimeval(struct timeval* refTime, struct timeval* resultTime, int usec) {
+  resultTime->tv_sec = refTime->tv_sec + usec / 1000000;
+  resultTime->tv_usec = refTime->tv_usec + usec % 1000000;
+
+  if (resultTime->tv_usec >= 1000000) {
+    resultTime->tv_sec++;
+    resultTime->tv_usec -= 1000000;
+  }
 }
 
 void savePassageiroData(int passageiro_id, struct tm *data_inicio, struct tm *data_saida, struct tm *data_chegada, int ponto_destino_id)

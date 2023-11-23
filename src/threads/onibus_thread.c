@@ -3,10 +3,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <sys/time.h>
 #include "factories.h"
 #include "helpers.h"
 #include "debug.h"
 #include "utils.h"
+
+void travel(Onibus *onibus)
+{
+  getCurrentTimeMs(onibus->data_saida);
+  int waitTimeMs = rand_int(2000, 3000);
+  getIncrementedTimeval(onibus->data_saida, onibus->data_chegada, waitTimeMs * 1000);
+  busy_wait_ms(waitTimeMs);
+}
 
 bool runUntilLockBusStop(OnibusContext *ctx)
 {
@@ -17,12 +26,13 @@ bool runUntilLockBusStop(OnibusContext *ctx)
   else
     onibus->destino = next_circular_idx(onibus->origem, ctx->pontos_de_onibus_list->length);
 
-  busy_wait_ms(rand_int(500, 1000));
+  travel(onibus);
 
   while (pthread_mutex_trylock(ctx->pontos_de_onibus_list->items[onibus->destino]->ponto_de_onibus_mutex) != 0)
   {
     onibus->destino = next_circular_idx(onibus->destino, ctx->pontos_de_onibus_list->length);
-    busy_wait_ms(rand_int(500, 1000));
+
+    travel(onibus);
   }
 
   return true;
