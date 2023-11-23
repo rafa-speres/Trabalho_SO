@@ -37,43 +37,6 @@ bool isFinished(PassageiroList *passageiro_list)
   return true;
 }
 
-struct tm *getCurrentTime()
-{
-  time_t currentTime;
-  struct tm *localTime;
-
-  time(&currentTime);
-  localTime = localtime(&currentTime);
-
-  // Make a copy of the struct tm
-  struct tm *result = (struct tm *)malloc(sizeof(struct tm));
-
-  if (result == NULL)
-  {
-    printf("Error allocation memory for current time\n");
-    exit(1);
-  }
-
-  *result = *localTime;
-
-  return result;
-}
-
-void getCurrentTimeMs(struct timeval * time)
-{
-  gettimeofday(time, NULL);
-}
-
-void getIncrementedTimeval(struct timeval* refTime, struct timeval* resultTime, int usec) {
-  resultTime->tv_sec = refTime->tv_sec + usec / 1000000;
-  resultTime->tv_usec = refTime->tv_usec + usec % 1000000;
-
-  if (resultTime->tv_usec >= 1000000) {
-    resultTime->tv_sec++;
-    resultTime->tv_usec -= 1000000;
-  }
-}
-
 void savePassageiroData(int passageiro_id, struct tm *data_inicio, struct tm *data_saida, struct tm *data_chegada, int ponto_destino_id)
 {
   char filename[64];

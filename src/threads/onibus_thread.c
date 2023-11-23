@@ -11,9 +11,9 @@
 
 void travel(Onibus *onibus)
 {
-  getCurrentTimeMs(onibus->data_saida);
+  get_current_timeval(onibus->data_saida);
   int waitTimeMs = rand_int(2000, 3000);
-  getIncrementedTimeval(onibus->data_saida, onibus->data_chegada, waitTimeMs * 1000);
+  get_incremented_timeval(onibus->data_saida, onibus->data_chegada, waitTimeMs * 1000);
   busy_wait_ms(waitTimeMs);
 }
 

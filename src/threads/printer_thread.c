@@ -20,7 +20,7 @@ double getElapsedTimePercent(Onibus *onibus)
 {
   struct timeval *now = (struct timeval *)malloc(sizeof(struct timeval));
 
-  getCurrentTimeMs(now);
+  get_current_timeval(now);
 
   long total = (onibus->data_chegada->tv_sec * 1000000 + onibus->data_chegada->tv_usec) - (onibus->data_saida->tv_sec * 1000000 + onibus->data_saida->tv_usec);
   long elapsed = (now->tv_sec * 1000000 + now->tv_usec) - (onibus->data_saida->tv_sec * 1000000 + onibus->data_saida->tv_usec);

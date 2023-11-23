@@ -1,5 +1,8 @@
 #include <time.h>
+#include <sys/time.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 #include "utils.h"
 
 // ms em milisegundos
@@ -13,15 +16,17 @@ void sleep_ms(unsigned int ms)
   nanosleep(&sleep_time, NULL);
 }
 
-void busy_wait_ms(unsigned long ms) {
-    clock_t start_time = clock();
-    clock_t elapsed_time;
+void busy_wait_ms(unsigned long ms)
+{
+  clock_t start_time = clock();
+  clock_t elapsed_time;
 
-    clock_t wait_ticks = (clock_t)(ms * CLOCKS_PER_SEC / 1000);
+  clock_t wait_ticks = (clock_t)(ms * CLOCKS_PER_SEC / 1000);
 
-    do {
-        elapsed_time = clock() - start_time;
-    } while (elapsed_time < wait_ticks);
+  do
+  {
+    elapsed_time = clock() - start_time;
+  } while (elapsed_time < wait_ticks);
 }
 
 // min e max são inclusos
@@ -34,4 +39,32 @@ int rand_int(int min, int max)
 int next_circular_idx(int current, int limit)
 {
   return (current + 1) % limit;
+}
+
+void get_current_tm(struct tm *result)
+{
+  time_t currentTime;
+  struct tm *localTime;
+
+  time(&currentTime);
+  localTime = localtime(&currentTime);
+
+  memcpy(result, localTime, sizeof(struct tm));
+}
+
+void get_current_timeval(struct timeval *time)
+{
+  gettimeofday(time, NULL);
+}
+
+void get_incremented_timeval(struct timeval *ref_time, struct timeval *result_time, int usec)
+{
+  result_time->tv_sec = ref_time->tv_sec + usec / 1000000;
+  result_time->tv_usec = ref_time->tv_usec + usec % 1000000;
+
+  if (result_time->tv_usec >= 1000000)
+  {
+    result_time->tv_sec++;
+    result_time->tv_usec -= 1000000;
+  }
 }

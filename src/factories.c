@@ -9,6 +9,9 @@
 PontoDeOnibus *create_PontoDeOnibus(int id, PassageiroList *passageiros_list)
 {
     PontoDeOnibus *ponto_de_onibus = (PontoDeOnibus *)malloc(sizeof(PontoDeOnibus));
+    
+    assert(ponto_de_onibus != NULL);
+    
     ponto_de_onibus->passageiros_list = createList();
     ponto_de_onibus->ponto_de_onibus_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
     ponto_de_onibus->onibus_management_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
@@ -17,7 +20,6 @@ PontoDeOnibus *create_PontoDeOnibus(int id, PassageiroList *passageiros_list)
     ponto_de_onibus->ponto_de_onibus_management_lock = (pthread_cond_t *)malloc(sizeof(pthread_cond_t));
     ponto_de_onibus->landing_passageiros_semaphore = (sem_t *)malloc(sizeof(sem_t));
 
-    assert(ponto_de_onibus != NULL);
     assert(ponto_de_onibus->passageiros_list != NULL);
     assert(ponto_de_onibus->ponto_de_onibus_mutex != NULL);
     assert(ponto_de_onibus->onibus_management_mutex != NULL);
@@ -51,9 +53,12 @@ PontoDeOnibus *create_PontoDeOnibus(int id, PassageiroList *passageiros_list)
 Onibus *create_Onibus(int onibus_id, int qtd_assentos)
 {
     Onibus *o = (Onibus *)malloc(sizeof(Onibus));
+    
+    assert(o != NULL);
+    
     o->data_saida = (struct timeval *)malloc(sizeof(struct timeval));
     o->data_chegada = (struct timeval *)malloc(sizeof(struct timeval));
-    assert(o != NULL);
+    
     assert(o->data_saida != NULL);
     assert(o->data_saida != NULL);
 
@@ -71,11 +76,20 @@ Onibus *create_Onibus(int onibus_id, int qtd_assentos)
 Passageiro *create_Passageiro(int passageiro_id, int qtd_pontos)
 {
     Passageiro *passageiro = (Passageiro *)malloc(sizeof(Passageiro));
+    
+    assert(passageiro != NULL);
+    
     passageiro->passageiro_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
     passageiro->passageiro_lock = (pthread_cond_t *)malloc(sizeof(pthread_cond_t));
-    assert(passageiro != NULL);
+    passageiro->data_inicio = (struct tm *)malloc(sizeof(struct tm));
+    passageiro->data_saida = (struct tm *)malloc(sizeof(struct tm));
+    passageiro->data_chegada = (struct tm *)malloc(sizeof(struct tm));
+    
     assert(passageiro->passageiro_mutex != NULL);
     assert(passageiro->passageiro_lock != NULL);
+    assert(passageiro->data_inicio != NULL);
+    assert(passageiro->data_saida != NULL);
+    assert(passageiro->data_chegada != NULL);
 
     pthread_mutex_init(passageiro->passageiro_mutex, NULL);
     pthread_cond_init(passageiro->passageiro_lock, NULL);

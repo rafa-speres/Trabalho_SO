@@ -25,7 +25,7 @@ void *thread_Passageiro(void *arg)
   PassageiroContext *ctx = (PassageiroContext *)arg;
   Passageiro *this = ctx->this;
 
-  this->data_inicio = getCurrentTime();
+  get_current_tm(this->data_inicio);
 
   pthread_mutex_lock(this->passageiro_mutex);
   pthread_cond_wait(this->passageiro_lock, this->passageiro_mutex);
@@ -36,7 +36,7 @@ void *thread_Passageiro(void *arg)
   debug_printf("PASSAGEIRO %d DESEMBARCANDO DO ONIBUS %d NO PONTO %d\n", this->id, onibus->id, ponto_de_onibus->id);
 
   removeFromList(onibus->passageiros_list, this);
-  this->data_chegada = getCurrentTime();
+  get_current_tm(this->data_chegada);
 
   busy_wait_ms(500);
 
