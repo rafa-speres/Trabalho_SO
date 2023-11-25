@@ -7,6 +7,7 @@
 */
 // para compilar: make all ou gcc -o main.run *.c ./threads/*.c -pthread -Wall -I .
 // para executar: make run ou ./main.run
+// para limpar os arquivos de trace: make clear
 
 
 #include <stdio.h>
@@ -27,7 +28,7 @@ void create_threads(
     pthread_t passageiros_threads_list[],
     pthread_t *printer_thread)
 {
-
+    //Pontos
     for (int i = 0; i < pontos_de_onibus_list->length; i++)
     {
         PontoDeOnibusContext *ponto_de_onibus_context = create_PontoDeOnibusContext(pontos_de_onibus_list->items[i], pontos_de_onibus_list, onibus_list, passageiros_list);
@@ -39,6 +40,7 @@ void create_threads(
         }
     }
 
+    //Onibus
     for (int i = 0; i < onibus_list->length; i++)
     {
         OnibusContext *onibus_context = create_OnibusContext(onibus_list->items[i], pontos_de_onibus_list, onibus_list, passageiros_list);
@@ -50,6 +52,7 @@ void create_threads(
         }
     }
 
+    //Passageiros
     for (int i = 0; i < passageiros_list->length; i++)
     {
         PassageiroContext *passageiro_context = create_PassageiroContext(passageiros_list->items[i], pontos_de_onibus_list, onibus_list, passageiros_list);
@@ -61,6 +64,7 @@ void create_threads(
         }
     }
 
+    //Thread para print
     if (pthread_create(printer_thread, NULL, thread_state_printer, create_Context(pontos_de_onibus_list, onibus_list, passageiros_list)) != 0)
     {
         perror("pthread_create(thread_state_printer) error");
