@@ -72,6 +72,8 @@ void create_threads(
     }
 }
 
+
+//Função responsável pelo join em todas as threads  para bloquear a execução do programa até que a thread especificada termine sua execução
 void join_threads(
     PontoDeOnibusList *pontos_de_onibus_list,
     OnibusList *onibus_list,

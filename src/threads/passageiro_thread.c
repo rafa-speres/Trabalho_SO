@@ -34,9 +34,11 @@ void *thread_Passageiro(void *arg)
   PassageiroContext *ctx = (PassageiroContext *)arg;
   Passageiro *this = ctx->this;
 
+  //Registro do início da execução da thread
   get_current_tm(this->data_inicio);
 
   pthread_mutex_lock(this->passageiro_mutex);
+  //Passageiro espera sinal da ponto_de_onibus_thread para descer no destino
   pthread_cond_wait(this->passageiro_lock, this->passageiro_mutex);
 
   PontoDeOnibus *ponto_de_onibus = getPassageiroPontoDeOnibus(ctx);
@@ -44,13 +46,16 @@ void *thread_Passageiro(void *arg)
 
   debug_printf("PASSAGEIRO %d DESEMBARCANDO DO ONIBUS %d NO PONTO %d\n", this->id, onibus->id, ponto_de_onibus->id);
 
+  //Passagerio chegou ao ponto de destino e é removido da lista de passageiros
   removeFromList(onibus->passageiros_list, this);
+  //Registro do fim da exeçução da thread
   get_current_tm(this->data_chegada);
 
   busy_wait_ms(500);
 
   debug_printf("PASSAGEIRO %d FINALIZANDO\n", this->id);
 
+  //Registro das infromações do passageiro no arquivo de trace
   savePassageiroData(this->id, this->data_inicio, this->data_saida, this->data_chegada, this->destino);
   this->finalizado = true;
 

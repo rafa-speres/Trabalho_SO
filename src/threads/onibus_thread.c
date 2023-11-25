@@ -63,7 +63,9 @@ void *thread_Onibus(void *arg)
 
     pthread_mutex_lock(ponto_de_onibus->onibus_management_mutex);
 
+    //ônibus sinaliza para o ponto no qual chegou
     pthread_cond_signal(ponto_de_onibus->ponto_de_onibus_management_lock);
+    //ônibus é avisado que pode sair do ponto
     pthread_cond_wait(ponto_de_onibus->onibus_management_lock, ponto_de_onibus->onibus_management_mutex);
 
     ponto_de_onibus->onibus_ocupando = -1;
@@ -71,9 +73,11 @@ void *thread_Onibus(void *arg)
     pthread_mutex_unlock(ponto_de_onibus->onibus_management_mutex);
     pthread_mutex_unlock(ponto_de_onibus->ponto_de_onibus_mutex);
 
+    //Ônibus saiu do ponto
     debug_printf("ONIBUS %d SAIU DE %d\n", this->id, ponto_de_onibus->id);
   }
 
+  //Finalização da thread_Onibus
   debug_printf("ONIBUS %d FINALIZOU\n", this->id);
 
   free(ctx);
