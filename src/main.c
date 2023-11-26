@@ -112,7 +112,8 @@ void join_threads(
         }
     }
 
-    // Sinalizando os pontos para finalizacao
+    // Alguns pontos ainda podem estar esperando por onibus.
+    // Acordamos eles para que possam finalizar
     for (int i = 0; i < pontos_de_onibus_list->length; i++) {
         if (pontos_de_onibus_list->items[i]->finalizado == false) {
             pthread_cond_signal(pontos_de_onibus_list->items[i]->ponto_de_onibus_management_lock);

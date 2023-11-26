@@ -30,6 +30,7 @@ bool runUntilLockBusStop(OnibusContext *ctx)
 {
   Onibus *onibus = ctx->this;
 
+  // Programa incializou, alocando uma origem para ônibus
   if (onibus->origem == -1)
     onibus->destino = rand_int(0, ctx->pontos_de_onibus_list->length - 1);
   else
@@ -37,10 +38,10 @@ bool runUntilLockBusStop(OnibusContext *ctx)
 
   travel(onibus);
 
+  // Viaja até garantir ponto de ônibus para si
   while (pthread_mutex_trylock(ctx->pontos_de_onibus_list->items[onibus->destino]->ponto_de_onibus_mutex) != 0)
   {
     onibus->destino = next_circular_idx(onibus->destino, ctx->pontos_de_onibus_list->length);
-
     travel(onibus);
   }
 
@@ -61,23 +62,26 @@ void *thread_Onibus(void *arg)
 
     debug_printf("ONIBUS %d ENTROU EM %d\n", this->id, ponto_de_onibus->id);
 
+    // Nesse momento, o ônibus e o ponto se "tornam uma coisa só". Esse mutex garante
+    // que ou a thread ônibus ou a thread ponto seja executada ao mesmo tempo
     pthread_mutex_lock(ponto_de_onibus->onibus_management_mutex);
 
-    //ônibus sinaliza para o ponto no qual chegou
+    // Ônibus sinaliza para o ponto no qual chegou
     pthread_cond_signal(ponto_de_onibus->ponto_de_onibus_management_lock);
-    //ônibus é avisado que pode sair do ponto
+    // Ônibus é avisado que pode sair do ponto
     pthread_cond_wait(ponto_de_onibus->onibus_management_lock, ponto_de_onibus->onibus_management_mutex);
 
     ponto_de_onibus->onibus_ocupando = -1;
 
+    // Ônibus e ponto "se desassociam"
     pthread_mutex_unlock(ponto_de_onibus->onibus_management_mutex);
+    // Ônibus sai do ponto
     pthread_mutex_unlock(ponto_de_onibus->ponto_de_onibus_mutex);
 
-    //Ônibus saiu do ponto
     debug_printf("ONIBUS %d SAIU DE %d\n", this->id, ponto_de_onibus->id);
   }
 
-  //Finalização da thread_Onibus
+  // Finalização da thread_Onibus
   debug_printf("ONIBUS %d FINALIZOU\n", this->id);
 
   free(ctx);

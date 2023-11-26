@@ -23,14 +23,16 @@ void *thread_PontoDeOnibus(void *arg)
   PontoDeOnibusContext *ctx = (PontoDeOnibusContext *)arg;
   PontoDeOnibus *this = ctx->this;
 
-  //Loop principal que executa enquanto há passageiros a serem atendidos no ponto de ônibus
+  // Loop principal que executa enquanto há passageiros a serem atendidos no ponto de ônibus
   while (isFinished(ctx->passageiro_list) == false)
   {
+    // Garante que somente essa thread consiga manusear essa struct nesse momento
     pthread_mutex_lock(this->ponto_de_onibus_management_mutex);
     debug_printf("PONTO %d ESTÁ LIVRE PARA RECEBER ONIBUS\n", this->id);
-    //Ponto espera ser avisado da chegada de um ônibus
+    // Ponto espera ser avisado da chegada de um ônibus
     pthread_cond_wait(this->ponto_de_onibus_management_lock, this->ponto_de_onibus_management_mutex);
 
+    // Ponto foi acordado mas não há ônibus ocupando => não há mais ônibus circulando (programa finalizou) e thread ponto pode finalizar também
     if (this->onibus_ocupando == -1)
     {
       pthread_mutex_unlock(this->ponto_de_onibus_management_mutex);
@@ -39,20 +41,22 @@ void *thread_PontoDeOnibus(void *arg)
 
     debug_printf("PONTO %d RECEBEU ONIBUS %d\n", this->id, this->onibus_ocupando);
 
-    //ônibus que está ocupando o ponto
+    // Ônibus que está ocupando o ponto
     Onibus *onibus = ctx->onibus_list->items[this->onibus_ocupando];
     DynamicList *landing_passageiros_list = getLandingPassageiros(onibus, this);
 
-    //Desembarque dos passageiros
+    // Desembarque dos passageiros
     for (int idx = 0; idx < landing_passageiros_list->length; idx++)
     {
       Passageiro *passageiro = (Passageiro *)landing_passageiros_list->items[idx];
 
+      // Acorda passageiro para que ela faça o desembarque
       pthread_cond_signal(passageiro->passageiro_lock);
+      // Dorme até passageiro terminar desembarque
       sem_wait(this->landing_passageiros_semaphore);
     }
 
-    //Embarque de passageiros no ônibus enquanto houver assentos disponíveis
+    // Embarque de passageiros no ônibus enquanto houver assentos disponíveis
     while (onibus->passageiros_list->length < onibus->qtd_assentos && this->passageiros_list->length > 0)
     {
       Passageiro *passageiro = (Passageiro *)shiftList(this->passageiros_list);
@@ -67,8 +71,9 @@ void *thread_PontoDeOnibus(void *arg)
     busy_wait_ms(5000);
 
     debug_printf("PONTO %d DESPACHOU ONIBUS %d\n", this->id, this->onibus_ocupando);
-    //Avisa a onibus_thread para que ela deixe o ponto
+    // Avisa o onibus para que ele deixe o ponto
     pthread_cond_signal(this->onibus_management_lock);
+    // Thread libera o "domínio" dessa struct
     pthread_mutex_unlock(this->ponto_de_onibus_management_mutex);
   }
 
