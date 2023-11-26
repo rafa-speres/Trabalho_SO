@@ -14,7 +14,7 @@ Funcoes para Sleep, Busy Wait, valores rand, index circular, e tempo
 #include <stdio.h>
 #include "utils.h"
 
-// ms em milisegundos
+// Dorme por uma quantidade especifica de milissegundos (ms)
 void sleep_ms(unsigned int ms)
 {
   struct timespec sleep_time;
@@ -25,6 +25,7 @@ void sleep_ms(unsigned int ms)
   nanosleep(&sleep_time, NULL);
 }
 
+// Espera ocupada por uma quantidade especifica de milissegundos
 void busy_wait_ms(unsigned long ms)
 {
   clock_t start_time = clock();
@@ -38,7 +39,7 @@ void busy_wait_ms(unsigned long ms)
   } while (elapsed_time < wait_ticks);
 }
 
-// min e max são inclusos
+// Gera um numero aleatorio no intervalo (min e max sao inclusos)
 int rand_int(int min, int max)
 {
   return min + (rand() % (max - min + 1));
@@ -50,6 +51,7 @@ int next_circular_idx(int current, int limit)
   return (current + 1) % limit;
 }
 
+// Obtem a hora atual
 void get_current_tm(struct tm *result)
 {
   time_t currentTime;
@@ -61,6 +63,7 @@ void get_current_tm(struct tm *result)
   memcpy(result, localTime, sizeof(struct tm));
 }
 
+// Obtem o tempo atual
 void get_current_timeval(struct timeval *time)
 {
   gettimeofday(time, NULL);
@@ -71,6 +74,7 @@ void get_incremented_timeval(struct timeval *ref_time, struct timeval *result_ti
   result_time->tv_sec = ref_time->tv_sec + usec / 1000000;
   result_time->tv_usec = ref_time->tv_usec + usec % 1000000;
 
+  // Ajusta o tempo se ultrapassar 1 segundo
   if (result_time->tv_usec >= 1000000)
   {
     result_time->tv_sec++;

@@ -16,6 +16,8 @@ Funcoes para auxilio geral (passageiros e lista de passageiros)
 #include "factories.h"
 #include "dynamic_list.h"
 
+
+// Retorna a lista de passageiros que estao desembarcando no ponto atual
 DynamicList *getLandingPassageiros(Onibus *onibus, PontoDeOnibus *ponto_de_onibus)
 {
   DynamicList *landing_passageiros_list = createList();
@@ -33,6 +35,7 @@ DynamicList *getLandingPassageiros(Onibus *onibus, PontoDeOnibus *ponto_de_onibu
   return landing_passageiros_list;
 }
 
+// Verifica se todos os passageiros foram finalizados
 bool isFinished(PassageiroList *passageiro_list)
 {
   for (int idx = 0; idx < passageiro_list->length; idx++)
@@ -46,6 +49,7 @@ bool isFinished(PassageiroList *passageiro_list)
   return true;
 }
 
+// Salva os dados de viagem do passageiro em um arquivo
 void savePassageiroData(int passageiro_id, struct tm *data_inicio, struct tm *data_saida, struct tm *data_chegada, int ponto_destino_id)
 {
   char filename[64];

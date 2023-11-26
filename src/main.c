@@ -19,6 +19,8 @@
 #include "factories.h"
 #include "threads/threads.h"
 
+
+// Criando e iniciando as threads
 void create_threads(
     PontoDeOnibusList *pontos_de_onibus_list,
     OnibusList *onibus_list,
@@ -73,7 +75,7 @@ void create_threads(
 }
 
 
-//Função responsável pelo join em todas as threads  para bloquear a execução do programa até que a thread especificada termine sua execução
+//Função responsável pelo join em todas as threads para bloquear a execução do programa até que a thread especificada termine sua execução
 void join_threads(
     PontoDeOnibusList *pontos_de_onibus_list,
     OnibusList *onibus_list,
@@ -83,12 +85,14 @@ void join_threads(
     pthread_t passageiros_threads_list[],
     pthread_t *printer_thread)
 {
+    // Thread de print
     if (pthread_join(*printer_thread, NULL) != 0)
     {
         perror("pthread_join(printer_thread) error");
         exit(3);
     }
 
+    // Passageiros
     for (int i = 0; i < passageiros_list->length; i++)
     {
         if (pthread_join(passageiros_threads_list[i], NULL) != 0)
@@ -98,6 +102,7 @@ void join_threads(
         }
     }
 
+    // Onibus
     for (int i = 0; i < onibus_list->length; i++)
     {
         if (pthread_join(onibus_threads_list[i], NULL) != 0)
@@ -107,12 +112,14 @@ void join_threads(
         }
     }
 
+    // Sinalizando os pontos para finalizacao
     for (int i = 0; i < pontos_de_onibus_list->length; i++) {
         if (pontos_de_onibus_list->items[i]->finalizado == false) {
             pthread_cond_signal(pontos_de_onibus_list->items[i]->ponto_de_onibus_management_lock);
         }
     }
 
+    // Pontos
     for (int i = 0; i < pontos_de_onibus_list->length; i++)
     {
         if (pthread_join(ponto_de_onibus_threads_list[i], NULL) != 0)
