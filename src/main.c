@@ -8,6 +8,7 @@
 // para compilar: make all ou gcc -o main.run *.c ./threads/*.c -pthread -Wall -I .
 // para executar: make run ou ./main.run
 // para limpar os arquivos de trace: make clear
+// a pasta traces tem os arquivos gerados por um run que fizemos utilizando o caso 1.in da pasta testes.
 
 
 #include <stdio.h>
